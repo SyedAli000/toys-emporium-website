@@ -1,0 +1,205 @@
+/* Shop page toolbar — unified search + sort */
+.shop-toolbar {
+  --toolbar-teal: oklch(0.52 0.18 193);
+  --toolbar-teal-soft: oklch(0.52 0.18 193 / 0.08);
+  --toolbar-border: oklch(0.93 0.01 210);
+  background: white;
+  border-radius: 1rem;
+  border: 1px solid var(--toolbar-border);
+  padding: 1rem;
+  box-shadow:
+    0 1px 3px oklch(0.2 0.02 210 / 0.04),
+    0 8px 24px -6px oklch(0.52 0.18 193 / 0.08);
+  animation: toolbarFadeIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.shop-toolbar__header {
+  margin-bottom: 1rem;
+}
+
+.shop-toolbar__title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: oklch(0.2 0.02 210);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.shop-toolbar__subtitle {
+  margin-top: 0.375rem;
+  font-size: 0.875rem;
+  color: oklch(0.5 0.02 210);
+}
+
+.shop-toolbar__subtitle strong {
+  color: var(--toolbar-teal);
+  font-weight: 600;
+}
+
+.shop-toolbar__controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .shop-toolbar__controls {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.shop-toolbar__search-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+.shop-toolbar__sort-wrap {
+  flex-shrink: 0;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .shop-toolbar__sort-wrap {
+    width: 11.5rem;
+  }
+}
+
+.shop-toolbar__sort-label {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: oklch(0.55 0.02 210);
+  margin-bottom: 0.375rem;
+}
+
+@media (min-width: 640px) {
+  .shop-toolbar__sort-label {
+    display: none;
+  }
+}
+
+/* Toolbar search variant */
+.search-bar--toolbar {
+  width: 100%;
+}
+
+.search-bar--toolbar .search-bar__shell {
+  display: flex;
+  align-items: center;
+  height: 2.75rem;
+  background: oklch(0.98 0.005 210);
+  border: 1.5px solid var(--toolbar-border);
+  border-radius: 0.75rem;
+  padding: 0 0.375rem 0 0.875rem;
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.search-bar--toolbar .search-bar__shell:focus-within {
+  background: white;
+  border-color: var(--toolbar-teal);
+  box-shadow: 0 0 0 3px oklch(0.52 0.18 193 / 0.12);
+}
+
+.search-bar--toolbar .search-bar__icon {
+  color: oklch(0.6 0.02 210);
+  flex-shrink: 0;
+  margin-right: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.search-bar--toolbar .search-bar__shell:focus-within .search-bar__icon {
+  color: var(--toolbar-teal);
+}
+
+.search-bar--toolbar .search-bar__input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 0.875rem;
+  color: oklch(0.2 0.02 210);
+  padding: 0;
+}
+
+.search-bar--toolbar .search-bar__input::placeholder {
+  color: oklch(0.62 0.02 210);
+}
+
+.search-bar--toolbar .search-bar__submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.125rem;
+  height: 2.125rem;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 0.5rem;
+  background: var(--toolbar-teal);
+  color: white;
+  cursor: pointer;
+  transition:
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.search-bar--toolbar .search-bar__submit:hover {
+  background: oklch(0.45 0.17 193);
+  transform: scale(1.06);
+  box-shadow: 0 4px 12px -2px oklch(0.52 0.18 193 / 0.45);
+}
+
+.search-bar--toolbar .search-bar__submit:active {
+  transform: scale(0.95);
+}
+
+/* Sort trigger inside toolbar */
+.shop-toolbar .app-select-trigger {
+  height: 2.75rem;
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1.5px solid var(--toolbar-border);
+  background: oklch(0.98 0.005 210);
+  font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: none;
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.shop-toolbar .app-select-trigger:hover {
+  background: white;
+  border-color: oklch(0.52 0.18 193 / 0.35);
+}
+
+.shop-toolbar .app-select-trigger[data-state='open'] {
+  background: white;
+  border-color: var(--toolbar-teal);
+  box-shadow: 0 0 0 3px oklch(0.52 0.18 193 / 0.12);
+}
+
+@keyframes toolbarFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shop-toolbar {
+    animation: none;
+  }
+}

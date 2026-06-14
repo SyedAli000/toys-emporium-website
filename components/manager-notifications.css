@@ -1,0 +1,111 @@
+.manager-alerts-section {
+  padding: 1rem 1rem 0;
+  border-bottom: 1px solid var(--sidebar-border, #e5e7eb);
+}
+
+.manager-alerts-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.manager-alerts-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.manager-alerts-bell {
+  position: relative;
+  padding: 0.375rem;
+  border-radius: 0.5rem;
+  color: #374151;
+  transition: background 0.15s;
+}
+
+.manager-alerts-bell:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.manager-alerts-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  min-width: 1.125rem;
+  height: 1.125rem;
+  padding: 0 0.25rem;
+  background: #f97316;
+  color: white;
+  font-size: 0.625rem;
+  font-weight: 700;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.manager-notifications-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 280px;
+  overflow-y: auto;
+  padding-bottom: 0.75rem;
+}
+
+.manager-notification-card {
+  display: block;
+  background: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  padding: 0.875rem 1rem;
+  text-align: left;
+  transition: box-shadow 0.15s;
+  border: 1px solid #f3f4f6;
+}
+
+.manager-notification-card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.manager-notification-card.unread {
+  border-left: 3px solid #2563eb;
+}
+
+.manager-notification-id {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.manager-notification-message {
+  font-size: 0.8125rem;
+  color: #6b7280;
+  line-height: 1.4;
+  margin-bottom: 0.375rem;
+}
+
+.manager-notification-time {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.manager-notifications-empty {
+  font-size: 0.8125rem;
+  color: #9ca3af;
+  padding: 0.5rem 0 0.75rem;
+}
+
+.manager-mark-all {
+  font-size: 0.6875rem;
+  color: #2563eb;
+  font-weight: 500;
+}
+
+.manager-mark-all:hover {
+  text-decoration: underline;
+}

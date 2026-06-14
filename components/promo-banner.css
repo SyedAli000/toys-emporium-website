@@ -1,0 +1,211 @@
+.promo-banner {
+  position: relative;
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto 2rem;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
+
+.promo-banner__carousel {
+  width: 100%;
+}
+
+.promo-banner__content {
+  margin: 0 !important;
+}
+
+.promo-banner__item {
+  padding-left: 0 !important;
+  min-width: 100%;
+  flex: 0 0 100%;
+}
+
+.promo-banner-slide {
+  position: relative;
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+}
+
+.promo-banner-slide img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  display: block;
+  transition: transform 8s ease-out;
+}
+
+.promo-banner:hover .promo-banner-slide img,
+.promo-banner__item.is-snapped .promo-banner-slide img {
+  transform: scale(1.06);
+}
+
+.promo-banner-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 2rem 1.5rem 1.5rem;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.82));
+  color: #fff;
+  transform: translateY(12px);
+  opacity: 0;
+  animation: promoCaptionIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards;
+}
+
+@keyframes promoCaptionIn {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.promo-banner-caption h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.promo-banner-caption p {
+  font-size: 0.9375rem;
+  opacity: 0.95;
+  max-width: 36rem;
+}
+
+.promo-banner-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--foreground);
+  cursor: pointer;
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.promo-banner-nav:hover:not(:disabled) {
+  transform: translateY(-50%) scale(1.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+  background: #fff;
+}
+
+.promo-banner-nav:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.promo-banner-nav--prev {
+  left: 1rem;
+}
+
+.promo-banner-nav--next {
+  right: 1rem;
+}
+
+.promo-banner-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  background: #fff;
+  border-top: 1px solid var(--border);
+}
+
+.promo-banner-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.promo-banner-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  border: none;
+  background: oklch(0.85 0.02 210);
+  cursor: pointer;
+  padding: 0;
+  transition:
+    width 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.35s ease,
+    transform 0.25s ease;
+}
+
+.promo-banner-dot:hover {
+  transform: scale(1.15);
+}
+
+.promo-banner-dot--active {
+  background: oklch(0.52 0.18 193);
+  width: 1.75rem;
+}
+
+.promo-banner-progress {
+  flex: 1;
+  max-width: 8rem;
+  height: 3px;
+  background: oklch(0.92 0.01 210);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.promo-banner-progress-bar {
+  height: 100%;
+  background: oklch(0.52 0.18 193);
+  border-radius: 9999px;
+  transition: width 0.1s linear;
+}
+
+.promo-banner-skeleton {
+  height: 300px;
+  background: linear-gradient(
+    90deg,
+    oklch(0.96 0.01 210) 0%,
+    oklch(0.92 0.02 210) 50%,
+    oklch(0.96 0.01 210) 100%
+  );
+  background-size: 200% 100%;
+  animation: animShimmer 1.5s ease-in-out infinite;
+}
+
+@media (max-width: 640px) {
+  .promo-banner-slide img {
+    height: 200px;
+  }
+
+  .promo-banner-caption h2 {
+    font-size: 1.125rem;
+  }
+
+  .promo-banner-nav {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .promo-banner-nav--prev {
+    left: 0.5rem;
+  }
+
+  .promo-banner-nav--next {
+    right: 0.5rem;
+  }
+}

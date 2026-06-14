@@ -1,0 +1,114 @@
+.image-upload-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.image-upload-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--foreground);
+  cursor: default;
+}
+
+.image-upload-dropzone {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+  aspect-ratio: 4 / 3;
+  border-radius: 0.75rem;
+  border: 2px dashed oklch(0.72 0.12 193);
+  background: oklch(0.97 0.02 193);
+  overflow: hidden;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+}
+
+.image-upload-dropzone:hover {
+  border-color: oklch(0.52 0.18 193);
+  background: oklch(0.95 0.03 193);
+  box-shadow: 0 4px 12px oklch(0.52 0.18 193 / 0.15);
+}
+
+.image-upload-dropzone--busy {
+  opacity: 0.85;
+}
+
+/* Full-area invisible file input — clicking the box opens the system file picker */
+.image-upload-file-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  cursor: pointer;
+  font-size: 0;
+}
+
+.image-upload-file-overlay:disabled {
+  cursor: wait;
+  pointer-events: none;
+}
+
+.image-upload-preview-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.image-upload-preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  padding: 1rem;
+  text-align: center;
+}
+
+.image-upload-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-upload-browse-btn {
+  min-width: 12rem;
+}
+
+.image-upload-filename {
+  font-size: 0.8125rem;
+  color: var(--foreground);
+  text-align: center;
+}
+
+.image-upload-hint {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  text-align: center;
+}
+
+.image-upload-error {
+  font-size: 0.875rem;
+  color: var(--destructive);
+  text-align: center;
+}
