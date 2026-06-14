@@ -56,13 +56,27 @@ export interface Product {
   updatedAt: Date;
 }
 
+export interface ReviewUser {
+  _id: string;
+  name: string;
+  email?: string;
+  avatar?: string;
+}
+
+export interface ReviewProduct {
+  _id: string;
+  name: string;
+  images?: string[];
+}
+
 export interface Review {
   _id: string;
-  productId: string;
-  userId: string;
+  productId: string | ReviewProduct;
+  userId: string | ReviewUser;
   rating: number;
   comment: string;
   createdAt: Date;
+  updatedAt?: Date;
 }
 
 // Cart & Order Types

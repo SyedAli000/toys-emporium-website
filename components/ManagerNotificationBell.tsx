@@ -95,12 +95,12 @@ export function ManagerNotificationBell() {
             items.slice(0, 8).map((n) => (
               <Link
                 key={n._id}
-                href="/manager/orders"
+                href={n.type === 'REVIEW' ? '/manager/reviews' : '/manager/orders'}
                 onClick={() => handleClick(n)}
                 className={`manager-notification-card ${!n.isRead ? 'unread' : ''}`}
               >
                 <p className="manager-notification-id">
-                  {formatOrderId(n.title)}
+                  {n.type === 'REVIEW' ? n.title : formatOrderId(n.title)}
                 </p>
                 <p className="manager-notification-message">{n.message}</p>
                 <p className="manager-notification-time">

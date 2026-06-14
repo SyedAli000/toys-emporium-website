@@ -11,6 +11,7 @@ import {
   getOrderCustomerLabel,
   type EnrichedOrderItem,
 } from '@/lib/enrich-order-items';
+import { OrderReviewPanel } from '@/components/OrderReviewPanel';
 import '@/app/user/orders/orders.css';
 
 type OrderDetailViewProps = {
@@ -202,6 +203,13 @@ export function OrderDetailView({
               </Button>
             )}
           </div>
+        </div>
+      )}
+
+      {!showStatusActions && order.status === 'delivered' && (
+        <div className="order-detail-card">
+          <h2>Rate your products</h2>
+          <OrderReviewPanel items={items} />
         </div>
       )}
     </div>

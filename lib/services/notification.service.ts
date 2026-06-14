@@ -6,6 +6,8 @@ export interface NotificationItem {
   title: string;
   message: string;
   relatedOrderId?: string;
+  relatedProductId?: string;
+  relatedReviewId?: string;
   isRead: boolean;
   createdAt: string;
 }

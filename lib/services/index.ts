@@ -4,6 +4,7 @@ export { categoryService } from './category.service';
 export { cartService, type CartItemResponse } from './cart.service';
 export { wishlistService } from './wishlist.service';
 export { orderService } from './order.service';
+export { reviewService } from './review.service';
 export { userService } from './user.service';
 export { analyticsService } from './analytics.service';
 export { bannerService } from './banner.service';

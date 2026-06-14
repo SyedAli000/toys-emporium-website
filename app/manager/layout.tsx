@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Menu, X, BarChart3, Package, Truck, Users, Settings, LogOut, Shield } from 'lucide-react';
+import { Menu, X, BarChart3, Package, Truck, Users, Settings, LogOut, Shield, Star } from 'lucide-react';
 import { ManagerNotificationBell } from '@/components/ManagerNotificationBell';
 
 export default function ManagerLayout({
@@ -41,6 +41,7 @@ export default function ManagerLayout({
     { icon: BarChart3, label: 'Dashboard', href: '/manager' },
     { icon: Package, label: 'Inventory', href: '/manager/inventory' },
     { icon: Truck, label: 'Orders', href: '/manager/orders' },
+    { icon: Star, label: 'Reviews', href: '/manager/reviews' },
     { icon: Users, label: 'Customers', href: '/manager/customers' },
     { icon: Settings, label: 'Settings', href: '/manager/settings' },
   ];

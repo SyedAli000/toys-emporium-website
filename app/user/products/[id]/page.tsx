@@ -26,6 +26,7 @@ import {
 import { useCart } from '@/contexts/CartContext';
 import { useAppPopup } from '@/contexts/AppPopupContext';
 import { PromoBanner } from '@/components/PromoBanner';
+import { ProductReviewsSection } from '@/components/ProductReviewsSection';
 import './product-detail.css';
 
 export default function ProductDetailPage() {
@@ -276,6 +277,13 @@ export default function ProductDetailPage() {
           )}
         </aside>
       </div>
+
+      <ProductReviewsSection
+        productId={product._id}
+        productName={product.name}
+        initialRating={product.ratings}
+        initialReviewCount={product.reviews}
+      />
     </div>
   );
 }
