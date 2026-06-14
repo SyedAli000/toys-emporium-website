@@ -98,12 +98,12 @@ function OrdersContent() {
                 <p className="order-meta-value">{order.trackingNumber || 'N/A'}</p>
               </div>
             </div>
-            <Link href={`/user/orders/${order._id}`} className="block">
-              <Button variant="outline" className="w-full sm:w-auto">
+            <Button asChild variant="outline" className="w-full sm:w-auto">
+              <Link href={`/user/orders/${order._id}`}>
                 View Details
                 <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </article>
         ))}
       </div>
