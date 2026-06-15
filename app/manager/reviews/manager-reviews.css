@@ -16,7 +16,14 @@
 }
 
 .manager-reviews-filter {
-  max-width: 12rem;
+  width: 100%;
+  max-width: 100%;
+}
+
+@media (min-width: 640px) {
+  .manager-reviews-filter {
+    max-width: 12rem;
+  }
 }
 
 .manager-reviews-table td {

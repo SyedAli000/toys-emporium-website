@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Menu, X, BarChart3, Package, Truck, Users, Settings, LogOut, Star } from 'lucide-react';
 import { ManagerNotificationBell } from '@/components/ManagerNotificationBell';
+import { Logo } from '@/components/Logo';
 
 export default function ManagerLayout({
   children,
@@ -51,14 +52,9 @@ export default function ManagerLayout({
       {/* Sidebar */}
       <aside className="hidden md:flex flex-col w-64 bg-sidebar border-r border-sidebar-border">
         {/* Logo */}
-        <Link href="/manager" className="flex items-center gap-3 p-6 border-b border-sidebar-border">
-          <div className="w-10 h-10 bg-sidebar-primary rounded-lg flex items-center justify-center">
-            <span className="text-sidebar-primary-foreground font-bold text-lg">TE</span>
-          </div>
-          <div>
-            <h1 className="font-bold text-sidebar-foreground">Toys Emporium</h1>
-            <p className="text-xs text-muted-foreground">Manager Panel</p>
-          </div>
+        <Link href="/manager" className="flex flex-col items-start gap-1 p-6 border-b border-sidebar-border">
+          <Logo href="/manager" size="md" asLink={false} />
+          <p className="text-xs text-muted-foreground pl-1">Manager Panel</p>
         </Link>
 
         <ManagerNotificationBell />
@@ -94,14 +90,9 @@ export default function ManagerLayout({
       {/* Mobile Header */}
       <div className="md:hidden w-full fixed top-0 z-50 bg-white/80 backdrop-blur-md border-b border-border">
         <div className="flex items-center justify-between p-4">
-          <Link href="/manager" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold">TE</span>
-            </div>
-            <span className="font-bold">Manager</span>
-          </Link>
+          <Logo href="/manager" size="sm" subtitle="Manager" />
           <div className="flex items-center gap-2">
-            <ManagerNotificationBell />
+            <ManagerNotificationBell variant="header" />
             <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2">
               {isMenuOpen ? <X /> : <Menu />}
             </button>
@@ -110,7 +101,7 @@ export default function ManagerLayout({
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="bg-white border-t border-border p-4 space-y-2">
+          <div className="bg-white border-t border-border p-4 space-y-2 max-h-[calc(100vh-4rem)] overflow-y-auto">
             {navItems.map((item) => {
               const IconComponent = item.icon;
               return (
@@ -135,8 +126,8 @@ export default function ManagerLayout({
       </div>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto mt-16 md:mt-0">
-        <div className="p-6 max-w-7xl">
+      <main className="flex-1 overflow-auto mt-16 md:mt-0 w-full min-w-0">
+        <div className="page-container py-4 sm:py-6 lg:py-8">
           {children}
         </div>
       </main>

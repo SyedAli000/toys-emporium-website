@@ -93,8 +93,8 @@ export default function ManagerReviewsPage() {
           </p>
         </Card>
       ) : (
-        <Card className="overflow-x-auto">
-          <table className="w-full manager-reviews-table">
+        <Card className="overflow-x-auto responsive-table-wrap">
+          <table className="w-full min-w-[900px] manager-reviews-table">
             <thead className="border-b border-border">
               <tr>
                 <th className="text-left p-4 font-semibold">Product</th>

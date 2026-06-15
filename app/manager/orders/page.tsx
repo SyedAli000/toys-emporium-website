@@ -65,8 +65,8 @@ export default function ManagerOrdersPage() {
           <h2 className="text-2xl font-semibold text-foreground mb-2">No Orders</h2>
         </Card>
       ) : (
-        <Card className="overflow-x-auto">
-          <table className="w-full">
+        <Card className="overflow-x-auto responsive-table-wrap">
+          <table className="w-full min-w-[800px]">
             <thead className="border-b border-border">
               <tr>
                 <th className="text-left p-4 font-semibold">Order ID</th>

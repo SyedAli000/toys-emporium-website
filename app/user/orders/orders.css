@@ -206,6 +206,19 @@
   flex-shrink: 0;
 }
 
+@media (max-width: 480px) {
+  .order-item-rich {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .order-item-rich__line-total {
+    width: 100%;
+    text-align: right;
+    margin-top: 0.25rem;
+  }
+}
+
 .order-address-block {
   font-size: 0.9375rem;
   line-height: 1.6;

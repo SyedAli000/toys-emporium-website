@@ -208,8 +208,8 @@ export default function AdminProductsPage() {
           <h2 className="text-2xl font-semibold text-foreground mb-2">No Products</h2>
         </Card>
       ) : !showForm ? (
-        <Card className="overflow-x-auto admin-table-wrap">
-          <table className="w-full">
+        <Card className="overflow-x-auto responsive-table-wrap">
+          <table className="w-full min-w-[720px]">
             <thead className="border-b border-border">
               <tr>
                 <th className="text-left p-4 font-semibold">Image</th>

@@ -13,6 +13,7 @@ import { decodeToken } from '@/lib/auth';
 import { getDashboardPath, getRoleLabel } from '@/lib/auth-redirect';
 import { AlertCircle, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { Logo } from '@/components/Logo';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -92,12 +93,12 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-blue-50 to-background flex items-center justify-center px-4 py-8">
       <div className="w-full max-w-md">
-        <Link href="/" className="flex items-center justify-center gap-2 mb-8">
-          <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold">TE</span>
-          </div>
-          <span className="font-bold text-lg text-foreground">Toys Emporium</span>
-        </Link>
+        <Logo
+          href="/"
+          centered
+          className="mb-8 sm:mb-10"
+          imageClassName="w-40 sm:w-48 md:w-56"
+        />
 
         <div className="bg-white rounded-2xl border border-border shadow-lg p-8">
           <h1 className="text-2xl font-bold text-foreground mb-2">Sign In</h1>
@@ -166,24 +167,24 @@ export default function LoginPage() {
           </p>
         </div>
 
-        <div className="mt-8 bg-blue-50 rounded-xl p-6 border border-blue-200">
+        <div className="mt-8 bg-blue-50 rounded-xl p-4 sm:p-6 border border-blue-200 overflow-x-auto">
           <p className="text-sm font-medium text-foreground mb-3">Demo accounts</p>
           <div className="space-y-2 text-sm text-muted-foreground">
-            <p>
+            <p className="break-words">
               <strong>{getRoleLabel('customer')}:</strong>{' '}
-              <code className="bg-white px-2 py-0.5 rounded">demo@example.com</code>
+              <code className="bg-white px-2 py-0.5 rounded break-all">demo@example.com</code>
               {' / '}
               <code className="bg-white px-2 py-0.5 rounded">password123</code>
             </p>
-            <p>
+            <p className="break-words">
               <strong>{getRoleLabel('manager')}:</strong>{' '}
-              <code className="bg-white px-2 py-0.5 rounded">manager@example.com</code>
+              <code className="bg-white px-2 py-0.5 rounded break-all">manager@example.com</code>
               {' / '}
               <code className="bg-white px-2 py-0.5 rounded">password123</code>
             </p>
-            <p>
+            <p className="break-words">
               <strong>{getRoleLabel('admin')}:</strong>{' '}
-              <code className="bg-white px-2 py-0.5 rounded">admin@example.com</code>
+              <code className="bg-white px-2 py-0.5 rounded break-all">admin@example.com</code>
               {' / '}
               <code className="bg-white px-2 py-0.5 rounded">password123</code>
             </p>

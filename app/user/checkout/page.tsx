@@ -119,7 +119,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      <h1 className="text-3xl font-bold text-foreground">Checkout</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Checkout</h1>
 
       <div className="checkout-steps">
         <div className={`checkout-step ${step >= 1 ? 'active' : ''} ${step > 1 ? 'done' : ''}`}>
@@ -363,7 +363,7 @@ export default function CheckoutPage() {
         </div>
 
         <div>
-          <Card className="p-6 sticky top-24">
+          <Card className="p-6 lg:sticky lg:top-24">
             <h3 className="font-bold text-lg mb-4">Order Summary</h3>
             <p className="text-sm text-muted-foreground mb-2">
               {cartItems.length} item(s)

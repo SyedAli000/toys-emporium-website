@@ -48,6 +48,21 @@
   background: #e5e7eb;
 }
 
+@media (max-width: 640px) {
+  .checkout-steps {
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+
+  .checkout-step > span:not(.checkout-step-num) {
+    display: none;
+  }
+
+  .checkout-step-divider {
+    width: 1rem;
+  }
+}
+
 .checkout-section-title {
   font-size: 1rem;
   font-weight: 600;

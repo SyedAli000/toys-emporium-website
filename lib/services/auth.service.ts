@@ -12,8 +12,4 @@ export const authService = {
     }),
   verify: () => api.get<{ user: User }>('/auth/verify'),
   logout: () => api.post<{ message: string }>('/auth/logout'),
-  forgotPassword: (email: string) =>
-    api.post<{ message: string }>('/auth/forgot-password', { email }),
-  resetPassword: (token: string, password: string) =>
-    api.post<{ message: string }>('/auth/reset-password', { token, password }),
 };

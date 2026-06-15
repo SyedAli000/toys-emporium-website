@@ -141,8 +141,8 @@ export default function InventoryPage() {
         </Card>
       )}
 
-      <Card className="overflow-x-auto">
-        <table className="w-full">
+      <Card className="overflow-x-auto responsive-table-wrap">
+        <table className="w-full min-w-[700px]">
           <thead className="border-b border-border">
             <tr>
               <th className="text-left p-4 font-semibold">Image</th>

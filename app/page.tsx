@@ -11,9 +11,11 @@ import { AuthToken } from '@/lib/types';
 import { PromoBanner } from '@/components/PromoBanner';
 import { FeaturedProductsSection } from '@/components/FeaturedProductsSection';
 import { AnimateIn } from '@/components/AnimateIn';
+import { Logo } from '@/components/Logo';
 
 export default function Page() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [user, setUser] = useState<AuthToken | null>(null);
 
   useEffect(() => {
@@ -37,12 +39,11 @@ export default function Page() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold">TE</span>
-              </div>
-              <span className="font-bold text-lg text-foreground hidden sm:inline">Toys Emporium</span>
-            </Link>
+            <Logo
+              href="/"
+              size="md"
+              imageClassName="w-24 sm:w-28 md:w-32"
+            />
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-8">
@@ -58,8 +59,10 @@ export default function Page() {
             </div>
 
             {/* Right Actions */}
-            <div className="flex items-center gap-4">
-              <SearchBar variant="nav" />
+            <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+              <div className="hidden sm:block">
+                <SearchBar variant="nav" />
+              </div>
               <Link href="/user/cart" className="p-2 hover:bg-muted rounded-lg transition relative">
                 <ShoppingCart className="w-5 h-5 text-foreground" />
                 <span className="absolute -top-1 -right-1 bg-accent text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center text-white">
@@ -68,16 +71,16 @@ export default function Page() {
               </Link>
 
               {user ? (
-                <div className="flex items-center gap-2 relative">
+                <div className="hidden md:flex items-center gap-2 relative">
                   <button
-                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                     className="p-2 hover:bg-muted rounded-lg transition"
                   >
                     <User className="w-5 h-5 text-foreground" />
                   </button>
-                  {isMenuOpen && (
-                    <div className="absolute top-14 right-4 bg-white border border-border rounded-lg shadow-lg p-2 min-w-48">
-                      <div className="px-3 py-2 text-sm font-medium text-foreground border-b border-border">
+                  {isUserMenuOpen && (
+                    <div className="absolute top-14 right-0 bg-white border border-border rounded-lg shadow-lg p-2 min-w-48 z-50">
+                      <div className="px-3 py-2 text-sm font-medium text-foreground border-b border-border break-all">
                         {user.email}
                       </div>
                       {user.role !== 'customer' && (
@@ -115,12 +118,80 @@ export default function Page() {
                 </div>
               )}
 
-              {/* Mobile Menu */}
-              <button className="md:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+              <button
+                className="md:hidden p-2"
+                onClick={() => {
+                  setIsMobileNavOpen(!isMobileNavOpen);
+                  setIsUserMenuOpen(false);
+                }}
+                aria-label="Toggle menu"
+              >
                 <Menu className="w-5 h-5" />
               </button>
             </div>
           </div>
+
+          {isMobileNavOpen && (
+            <div className="md:hidden border-t border-border pb-4 pt-2 space-y-1">
+              <Link
+                href="/user/products"
+                className="block px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted rounded-lg"
+                onClick={() => setIsMobileNavOpen(false)}
+              >
+                Shop
+              </Link>
+              <Link
+                href="/user/orders"
+                className="block px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted rounded-lg"
+                onClick={() => setIsMobileNavOpen(false)}
+              >
+                Orders
+              </Link>
+              <Link
+                href="/user/wishlist"
+                className="block px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted rounded-lg"
+                onClick={() => setIsMobileNavOpen(false)}
+              >
+                Wishlist
+              </Link>
+
+              <div className="px-4 pt-2 sm:hidden">
+                <SearchBar variant="nav" />
+              </div>
+
+              {user ? (
+                <div className="px-4 pt-2 space-y-1 border-t border-border mt-2">
+                  <p className="text-xs text-muted-foreground py-2 break-all">{user.email}</p>
+                  {user.role === 'manager' && (
+                    <Link href="/manager" className="block py-2 text-sm text-foreground hover:text-primary" onClick={() => setIsMobileNavOpen(false)}>
+                      Manager Dashboard
+                    </Link>
+                  )}
+                  {(user.role === 'admin' || user.role === 'super_admin') && (
+                    <Link href="/admin" className="block py-2 text-sm text-foreground hover:text-primary" onClick={() => setIsMobileNavOpen(false)}>
+                      Admin Dashboard
+                    </Link>
+                  )}
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left py-2 text-sm text-destructive flex items-center gap-2"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-2 px-4 pt-3 sm:hidden">
+                  <HeroButton href="/login" variant="nav-login" className="w-full justify-center">
+                    Login
+                  </HeroButton>
+                  <HeroButton href="/register" variant="nav-signup" className="w-full justify-center">
+                    Sign Up
+                  </HeroButton>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </nav>
 
@@ -178,7 +249,7 @@ export default function Page() {
       <section className="bg-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimateIn>
-            <h2 className="text-3xl font-bold text-foreground mb-12">Shop by Category</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-12">Shop by Category</h2>
           </AnimateIn>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 anim-stagger-children">
             {[
@@ -225,7 +296,7 @@ export default function Page() {
           }}
         />
         <AnimateIn className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <h2 className="text-3xl font-bold mb-4">Ready to Find Your Next Favorite Toy?</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4">Ready to Find Your Next Favorite Toy?</h2>
           <p className="mb-8 text-primary-foreground/90">
             Join thousands of happy customers exploring our endless collection.
           </p>
@@ -240,7 +311,7 @@ export default function Page() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div>
-              <h4 className="font-bold text-foreground mb-4">About Us</h4>
+              <Logo href="/" size="lg" className="mb-4" />
               <p className="text-muted-foreground text-sm">Premium toy destination for joy and imagination.</p>
             </div>
             <div>

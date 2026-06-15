@@ -38,8 +38,8 @@ export default function CustomersPage() {
           <h2 className="text-2xl font-semibold text-foreground mb-2">No Customers</h2>
         </Card>
       ) : (
-        <Card className="overflow-x-auto">
-          <table className="w-full">
+        <Card className="overflow-x-auto responsive-table-wrap">
+          <table className="w-full min-w-[600px]">
             <thead className="border-b border-border">
               <tr>
                 <th className="text-left p-4 font-semibold">Name</th>
@@ -51,7 +51,7 @@ export default function CustomersPage() {
               {customers.map((c) => (
                 <tr key={c._id} className="border-b border-border">
                   <td className="p-4">{c.name}</td>
-                  <td className="p-4">{c.email}</td>
+                  <td className="p-4 break-all">{c.email}</td>
                   <td className="p-4">{c.isActive ? 'Active' : 'Inactive'}</td>
                 </tr>
               ))}

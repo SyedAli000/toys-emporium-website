@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Menu, X, BarChart3, Package, Users, Tag, ImageIcon, Settings, LogOut, Shield } from 'lucide-react';
+import { Logo } from '@/components/Logo';
 
 export default function AdminLayout({
   children,
@@ -51,14 +52,9 @@ export default function AdminLayout({
       {/* Sidebar */}
       <aside className="hidden md:flex flex-col w-64 bg-sidebar border-r border-sidebar-border">
         {/* Logo */}
-        <Link href="/admin" className="flex items-center gap-3 p-6 border-b border-sidebar-border">
-          <div className="w-10 h-10 bg-sidebar-primary rounded-lg flex items-center justify-center">
-            <span className="text-sidebar-primary-foreground font-bold text-lg">TE</span>
-          </div>
-          <div>
-            <h1 className="font-bold text-sidebar-foreground">Toys Emporium</h1>
-            <p className="text-xs text-muted-foreground">Admin Panel</p>
-          </div>
+        <Link href="/admin" className="flex flex-col items-start gap-1 p-6 border-b border-sidebar-border">
+          <Logo href="/admin" size="md" asLink={false} />
+          <p className="text-xs text-muted-foreground pl-1">Admin Panel</p>
         </Link>
 
         {/* Navigation */}
@@ -92,12 +88,7 @@ export default function AdminLayout({
       {/* Mobile Header */}
       <div className="md:hidden w-full fixed top-0 z-50 bg-white/80 backdrop-blur-md border-b border-border">
         <div className="flex items-center justify-between p-4">
-          <Link href="/admin" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold">TE</span>
-            </div>
-            <span className="font-bold">Admin</span>
-          </Link>
+          <Logo href="/admin" size="sm" subtitle="Admin" />
           <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2">
             {isMenuOpen ? <X /> : <Menu />}
           </button>
@@ -105,7 +96,7 @@ export default function AdminLayout({
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="bg-white border-t border-border p-4 space-y-2">
+          <div className="bg-white border-t border-border p-4 space-y-2 max-h-[calc(100vh-4rem)] overflow-y-auto">
             {navItems.map((item) => {
               const IconComponent = item.icon;
               return (
@@ -130,8 +121,8 @@ export default function AdminLayout({
       </div>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto mt-16 md:mt-0">
-        <div className="p-6 max-w-7xl">
+      <main className="flex-1 overflow-auto mt-16 md:mt-0 w-full min-w-0">
+        <div className="page-container py-4 sm:py-6 lg:py-8">
           {children}
         </div>
       </main>

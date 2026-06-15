@@ -63,8 +63,10 @@ export default function DashboardPage() {
 
       <FlashSaleSection products={flashSale} />
 
-      <AnimateIn className="bg-gradient-to-r from-primary to-accent text-primary-foreground rounded-xl p-8 shadow-lg">
-        <h1 className="text-3xl font-bold mb-2">Welcome back, {user?.email}!</h1>
+      <AnimateIn className="bg-gradient-to-r from-primary to-accent text-primary-foreground rounded-xl p-6 sm:p-8 shadow-lg">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-2 break-words">
+          Welcome back, {user?.email}!
+        </h1>
         <p className="opacity-90">Manage your orders, wishlist, and account settings from here.</p>
       </AnimateIn>
 
@@ -107,7 +109,7 @@ export default function DashboardPage() {
       </div>
 
       <div>
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-6">
           <h2 className="text-2xl font-bold text-foreground">Recent Orders</h2>
           <Link href="/user/orders">
             <Button variant="outline" size="sm">View All</Button>
@@ -124,8 +126,8 @@ export default function DashboardPage() {
         ) : (
           <div className="space-y-3">
             {orders.slice(0, 3).map((o) => (
-              <Card key={o._id} className="p-4 flex justify-between items-center">
-                <span>#{o._id.slice(-8)} — {formatPrice(o.totalAmount)}</span>
+              <Card key={o._id} className="p-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                <span className="break-all">#{o._id.slice(-8)} — {formatPrice(o.totalAmount)}</span>
                 <span className="capitalize text-sm text-muted-foreground">{o.status}</span>
               </Card>
             ))}

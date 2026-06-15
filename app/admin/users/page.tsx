@@ -60,8 +60,8 @@ export default function AdminUsersPage() {
           <h2 className="text-2xl font-semibold text-foreground mb-2">No Users</h2>
         </Card>
       ) : (
-        <Card className="overflow-x-auto">
-          <table className="w-full">
+        <Card className="overflow-x-auto responsive-table-wrap">
+          <table className="w-full min-w-[640px]">
             <thead className="border-b border-border">
               <tr>
                 <th className="text-left p-4 font-semibold">Name</th>
@@ -75,7 +75,7 @@ export default function AdminUsersPage() {
               {users.map((u) => (
                 <tr key={u._id} className="border-b border-border">
                   <td className="p-4">{u.name}</td>
-                  <td className="p-4">{u.email}</td>
+                  <td className="p-4 break-all">{u.email}</td>
                   <td className="p-4 capitalize">{u.role}</td>
                   <td className="p-4">{u.isActive ? 'Active' : 'Inactive'}</td>
                   <td className="p-4">

@@ -10,6 +10,7 @@ import { Menu, X, Home, ShoppingCart, Heart, Package, User, LogOut } from 'lucid
 import { CartProvider, useCart } from '@/contexts/CartContext';
 import { AddToCartPopup } from '@/components/AddToCartPopup';
 import { SearchBar } from '@/components/SearchBar';
+import { Logo } from '@/components/Logo';
 
 function UserLayoutInner({
   children,
@@ -57,12 +58,11 @@ function UserLayoutInner({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold">TE</span>
-              </div>
-              <span className="font-bold text-lg text-foreground hidden sm:inline">Toys Emporium</span>
-            </Link>
+            <Logo
+              href="/"
+              size="md"
+              imageClassName="w-24 sm:w-28 md:w-32"
+            />
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-8">
@@ -85,8 +85,10 @@ function UserLayoutInner({
             </div>
 
             {/* Right Actions */}
-            <div className="flex items-center gap-4">
-              <SearchBar variant="nav" />
+            <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+              <div className="hidden sm:block">
+                <SearchBar variant="nav" />
+              </div>
               <Link href="/user/cart" className="p-2 hover:bg-muted rounded-lg transition relative">
                 <ShoppingCart className="w-5 h-5 text-foreground" />
                 <span className="absolute -top-1 -right-1 bg-orange-500 text-xs font-bold rounded-full min-w-[1.25rem] h-5 px-1 flex items-center justify-center text-white">
@@ -94,10 +96,10 @@ function UserLayoutInner({
                 </span>
               </Link>
 
-              <div className="hidden md:flex items-center gap-2">
-                <div className="flex items-center gap-2 px-3 py-1 bg-muted rounded-lg">
-                  <User className="w-4 h-4 text-foreground" />
-                  <span className="text-sm text-foreground">{user?.email}</span>
+              <div className="hidden md:flex items-center gap-2 min-w-0">
+                <div className="flex items-center gap-2 px-3 py-1 bg-muted rounded-lg max-w-[12rem] lg:max-w-xs">
+                  <User className="w-4 h-4 text-foreground shrink-0" />
+                  <span className="text-sm text-foreground truncate">{user?.email}</span>
                 </div>
                 <Button
                   variant="ghost"
@@ -126,7 +128,10 @@ function UserLayoutInner({
 
           {/* Mobile Navigation */}
           {isMenuOpen && (
-            <div className="md:hidden pb-4 border-t border-border">
+            <div className="md:hidden pb-4 border-t border-border max-h-[calc(100vh-4rem)] overflow-y-auto">
+              <div className="px-4 pt-3 sm:hidden">
+                <SearchBar variant="nav" />
+              </div>
               <Link href="/user/dashboard" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-muted rounded">
                 <Home className="w-4 h-4" />
                 Dashboard

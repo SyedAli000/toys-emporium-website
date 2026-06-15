@@ -11,6 +11,7 @@ import Cookies from 'js-cookie';
 import { api } from '@/lib/api';
 import { AlertCircle, Loader2, CheckCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { Logo } from '@/components/Logo';
 
 const registerSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -89,13 +90,12 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-blue-50 to-background flex items-center justify-center px-4">
       <div className="w-full max-w-md">
-        {/* Logo */}
-        <Link href="/" className="flex items-center justify-center gap-2 mb-8">
-          <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold">TE</span>
-          </div>
-          <span className="font-bold text-lg text-foreground">Toys Emporium</span>
-        </Link>
+        <Logo
+          href="/"
+          centered
+          className="mb-8 sm:mb-10"
+          imageClassName="w-40 sm:w-48 md:w-56"
+        />
 
         {/* Card */}
         <div className="bg-white rounded-2xl border border-border shadow-lg p-8">
@@ -154,9 +154,9 @@ export default function RegisterPage() {
               {errors.confirmPassword && <p className="text-sm text-destructive mt-1">{errors.confirmPassword.message}</p>}
             </div>
 
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" className="rounded border-border" required />
-              <span className="text-sm text-muted-foreground">
+            <label className="flex items-start gap-2 cursor-pointer">
+              <input type="checkbox" className="rounded border-border mt-0.5 shrink-0" required />
+              <span className="text-sm text-muted-foreground leading-snug break-words">
                 I agree to the{' '}
                 <a href="#" className="text-primary hover:underline">
                   Terms of Service

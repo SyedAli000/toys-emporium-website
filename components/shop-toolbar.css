@@ -18,11 +18,17 @@
 }
 
 .shop-toolbar__title {
-  font-size: 1.75rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: oklch(0.2 0.02 210);
   letter-spacing: -0.02em;
   line-height: 1.2;
+}
+
+@media (min-width: 640px) {
+  .shop-toolbar__title {
+    font-size: 1.75rem;
+  }
 }
 
 .shop-toolbar__subtitle {
