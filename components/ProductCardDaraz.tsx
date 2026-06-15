@@ -10,6 +10,8 @@ import {
   getSalePrice,
   hasDiscount,
 } from '@/lib/product-pricing';
+import { formatPrice } from '@/lib/currency';
+import { WishlistHeart } from '@/components/WishlistHeart';
 import './daraz-store.css';
 
 type ProductCardDarazProps = {
@@ -26,10 +28,10 @@ export function ProductCardDaraz({ product, variant = 'grid' }: ProductCardDaraz
 
   const priceBlock = (
     <>
-      <span className="daraz-product-card__price">${sale.toFixed(2)}</span>
+      <span className="daraz-product-card__price">{formatPrice(sale)}</span>
       {hasDiscount(product) && (
         <div className="mt-0.5">
-          <span className="daraz-product-card__was">${original.toFixed(2)}</span>
+          <span className="daraz-product-card__was">{formatPrice(original)}</span>
           <span className="daraz-product-card__off">-{discount}%</span>
         </div>
       )}
@@ -38,33 +40,47 @@ export function ProductCardDaraz({ product, variant = 'grid' }: ProductCardDaraz
 
   if (variant === 'flash') {
     return (
-      <Link href={href} className="daraz-flash__item daraz-product-card">
-        {img ? (
-          <img src={resolveImageUrl(img)} alt={product.name} className="daraz-product-card__img" />
-        ) : (
-          <div className="daraz-product-card__img flex items-center justify-center text-4xl bg-[#fafafa]">
-            🎮
-          </div>
-        )}
-        <p className="daraz-product-card__name">{product.name}</p>
-        {priceBlock}
-      </Link>
+      <div className="daraz-flash__item daraz-product-card relative">
+        <WishlistHeart
+          productId={product._id}
+          productName={product.name}
+          size="sm"
+        />
+        <Link href={href} className="block">
+          {img ? (
+            <img src={resolveImageUrl(img)} alt={product.name} className="daraz-product-card__img" />
+          ) : (
+            <div className="daraz-product-card__img flex items-center justify-center text-4xl bg-[#fafafa]">
+              🎮
+            </div>
+          )}
+          <p className="daraz-product-card__name">{product.name}</p>
+          {priceBlock}
+        </Link>
+      </div>
     );
   }
 
   return (
-    <Link href={href} className="daraz-grid-card__link block">
+    <div className="daraz-grid-card__link block">
       <div className="daraz-grid-card__img-wrap">
-        {hasDiscount(product) && (
-          <span className="daraz-grid-card__discount-tag">-{discount}%</span>
-        )}
-        {img ? (
-          <img src={resolveImageUrl(img)} alt={product.name} className="daraz-grid-card__img" />
-        ) : (
-          <div className="daraz-grid-card__img flex items-center justify-center text-5xl">🎮</div>
-        )}
+        <WishlistHeart
+          productId={product._id}
+          productName={product.name}
+          size="sm"
+        />
+        <Link href={href} className="block">
+          {hasDiscount(product) && (
+            <span className="daraz-grid-card__discount-tag">-{discount}%</span>
+          )}
+          {img ? (
+            <img src={resolveImageUrl(img)} alt={product.name} className="daraz-grid-card__img" />
+          ) : (
+            <div className="daraz-grid-card__img flex items-center justify-center text-5xl">🎮</div>
+          )}
+        </Link>
       </div>
-      <div className="daraz-grid-card__body">
+      <Link href={href} className="daraz-grid-card__body block">
         <p className="daraz-product-card__name">{product.name}</p>
         {priceBlock}
         <div className="daraz-product-card__stars mt-1">
@@ -76,7 +92,7 @@ export function ProductCardDaraz({ product, variant = 'grid' }: ProductCardDaraz
           ))}
           <span className="text-muted-foreground ml-0.5">({product.reviews || 0})</span>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 }

@@ -7,14 +7,18 @@ import Link from 'next/link';
 import { Heart, ShoppingCart, Trash2, Loader2 } from 'lucide-react';
 import { wishlistService, cartService } from '@/lib/services';
 import { resolveImageUrl } from '@/lib/image-url';
+import { formatPrice } from '@/lib/currency';
+import { getSalePrice } from '@/lib/product-pricing';
 import { Product } from '@/lib/types';
 import { useCart } from '@/contexts/CartContext';
+import { useWishlist } from '@/contexts/WishlistContext';
 import { useAppPopup } from '@/contexts/AppPopupContext';
 
 export default function WishlistPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const { refreshCart, showAddToCartPopup } = useCart();
+  const { refreshWishlist } = useWishlist();
   const popup = useAppPopup();
 
   const load = async () => {
@@ -22,6 +26,7 @@ export default function WishlistPage() {
     try {
       const res = await wishlistService.get();
       setProducts((res.products as Product[]) || []);
+      await refreshWishlist();
     } catch {
       setProducts([]);
     } finally {
@@ -97,7 +102,7 @@ export default function WishlistPage() {
             <div className="p-4">
               <h3 className="font-semibold text-foreground line-clamp-2">{item.name}</h3>
               <p className="text-xl font-bold text-primary mt-3">
-                ${Number(item.price).toFixed(2)}
+                {formatPrice(getSalePrice(item))}
               </p>
               <Button className="w-full mt-4" size="sm" onClick={() => handleAddToCart(item)}>
                 <ShoppingCart className="w-4 h-4 mr-2" />

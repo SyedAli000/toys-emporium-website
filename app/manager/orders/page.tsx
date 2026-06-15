@@ -8,6 +8,7 @@ import { Package, Loader2, Eye } from 'lucide-react';
 import { orderService } from '@/lib/services';
 import { Order } from '@/lib/types';
 import { getOrderCustomerLabel } from '@/lib/enrich-order-items';
+import { formatPrice } from '@/lib/currency';
 import { AppSelect, ORDER_STATUS_OPTIONS } from '@/components/AppSelect';
 
 export default function ManagerOrdersPage() {
@@ -90,7 +91,7 @@ export default function ManagerOrdersPage() {
                   <td className="p-4 text-sm text-muted-foreground">
                     {getOrderCustomerLabel(o.userId)}
                   </td>
-                  <td className="p-4 font-medium">${o.totalAmount.toFixed(2)}</td>
+                  <td className="p-4 font-medium">{formatPrice(o.totalAmount)}</td>
                   <td className="p-4 capitalize">{o.status}</td>
                   <td className="p-4">{new Date(o.createdAt).toLocaleDateString()}</td>
                   <td className="p-4">

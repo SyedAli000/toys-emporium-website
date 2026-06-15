@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Loader2, MapPin, CreditCard, ClipboardList, Check } from 'lucide-react';
 import { cartService, orderService, CartItemResponse } from '@/lib/services';
 import { useAppPopup } from '@/contexts/AppPopupContext';
+import { formatPrice } from '@/lib/currency';
 import './checkout.css';
 
 type Step = 1 | 2 | 3;
@@ -305,7 +306,7 @@ export default function CheckoutPage() {
                       {item.product?.name || 'Product'} × {item.quantity}
                     </span>
                     <span className="font-medium">
-                      ${(item.price * item.quantity).toFixed(2)}
+                      {formatPrice(item.price * item.quantity)}
                     </span>
                   </div>
                 ))}
@@ -369,7 +370,7 @@ export default function CheckoutPage() {
             </p>
             <div className="flex justify-between text-lg font-bold mb-3">
               <span>Subtotal</span>
-              <span className="text-primary">${subtotal.toFixed(2)}</span>
+              <span className="text-primary">{formatPrice(subtotal)}</span>
             </div>
             <p className="checkout-shipping-notice checkout-shipping-notice--compact">
               Shipping cost will be confirmed based on your city and area.

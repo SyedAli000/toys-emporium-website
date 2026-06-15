@@ -9,6 +9,7 @@ import { ShoppingCart, Heart, Package, Truck, Clock, CheckCircle, Loader2 } from
 import { productService, orderService, wishlistService } from '@/lib/services';
 import { Product, Order } from '@/lib/types';
 import { splitProductsForStore } from '@/lib/product-pricing';
+import { formatPrice } from '@/lib/currency';
 import { PromoBanner } from '@/components/PromoBanner';
 import { FlashSaleSection } from '@/components/FlashSaleSection';
 import { JustForYouGrid } from '@/components/JustForYouGrid';
@@ -124,7 +125,7 @@ export default function DashboardPage() {
           <div className="space-y-3">
             {orders.slice(0, 3).map((o) => (
               <Card key={o._id} className="p-4 flex justify-between items-center">
-                <span>#{o._id.slice(-8)} — ${o.totalAmount.toFixed(2)}</span>
+                <span>#{o._id.slice(-8)} — {formatPrice(o.totalAmount)}</span>
                 <span className="capitalize text-sm text-muted-foreground">{o.status}</span>
               </Card>
             ))}

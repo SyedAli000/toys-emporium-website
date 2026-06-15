@@ -10,6 +10,7 @@ import {
   type CarouselApi,
 } from '@/components/ui/carousel';
 import './product-carousel.css';
+import { formatPrice } from '@/lib/currency';
 
 export interface CarouselProduct {
   id: string;
@@ -127,11 +128,11 @@ export function ProductCarousel({
                   </div>
                   <div className="mb-4">
                     <span className="text-lg font-bold text-foreground">
-                      ${product.price.toFixed(2)}
+                      {formatPrice(product.price)}
                     </span>
                     {product.originalPrice > product.price && (
                       <span className="text-sm text-muted-foreground line-through ml-2">
-                        ${product.originalPrice.toFixed(2)}
+                        {formatPrice(product.originalPrice)}
                       </span>
                     )}
                   </div>

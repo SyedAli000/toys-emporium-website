@@ -8,6 +8,7 @@ import { ShoppingCart, Trash2, Loader2, ArrowRight } from 'lucide-react';
 import { cartService, CartItemResponse } from '@/lib/services';
 import { useCart } from '@/contexts/CartContext';
 import { resolveImageUrl } from '@/lib/image-url';
+import { formatPrice } from '@/lib/currency';
 import './cart.css';
 
 export default function CartPage() {
@@ -100,17 +101,17 @@ export default function CartPage() {
               <div className="cart-item-body">
                 <h3 className="cart-item-name">{item.product?.name || 'Product'}</h3>
                 <p className="cart-item-meta">
-                  Quantity: {item.quantity} · ${Number(item.price).toFixed(2)} each
+                  Quantity: {item.quantity} · {formatPrice(item.price)} each
                   {item.product?.originalPrice &&
                     item.product.originalPrice > item.price && (
                       <span className="cart-item-original">
                         {' '}
-                        (was ${item.product.originalPrice.toFixed(2)})
+                        (was {formatPrice(item.product.originalPrice)})
                       </span>
                     )}
                 </p>
                 <p className="cart-item-price">
-                  ${(item.price * item.quantity).toFixed(2)}
+                  {formatPrice(item.price * item.quantity)}
                 </p>
               </div>
 
@@ -130,7 +131,7 @@ export default function CartPage() {
           <h2 className="cart-summary-title">Order Summary</h2>
           <div className="cart-summary-row">
             <span>Subtotal ({itemCount} items)</span>
-            <strong>${subtotal.toFixed(2)}</strong>
+            <strong>{formatPrice(subtotal)}</strong>
           </div>
           <p className="cart-shipping-notice">
             Shipping charges are not included. We will confirm the shipping cost
@@ -138,7 +139,7 @@ export default function CartPage() {
           </p>
           <div className="cart-summary-total">
             <span>Total (excl. shipping)</span>
-            <span>${subtotal.toFixed(2)}</span>
+            <span>{formatPrice(subtotal)}</span>
           </div>
           <div className="cart-summary-actions">
             <Button

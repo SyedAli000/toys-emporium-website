@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Package, Truck, DollarSign, Users, Loader2 } from 'lucide-react';
+import { Package, Truck, Banknote, Users, Loader2 } from 'lucide-react';
 import { analyticsService } from '@/lib/services';
+import { formatPrice } from '@/lib/currency';
 
 export default function ManagerDashboard() {
   const [stats, setStats] = useState({
@@ -32,7 +33,7 @@ export default function ManagerDashboard() {
 
   const statCards = [
     { title: 'Total Orders', value: String(stats.totalOrders), icon: Package, color: 'bg-blue-50', iconColor: 'text-blue-600' },
-    { title: 'Revenue', value: `$${stats.totalRevenue.toFixed(2)}`, icon: DollarSign, color: 'bg-green-50', iconColor: 'text-green-600' },
+    { title: 'Revenue', value: formatPrice(stats.totalRevenue), icon: Banknote, color: 'bg-green-50', iconColor: 'text-green-600' },
     { title: 'Customers', value: String(stats.totalUsers), icon: Users, color: 'bg-purple-50', iconColor: 'text-purple-600' },
     { title: 'Products', value: String(stats.totalProducts), icon: Truck, color: 'bg-orange-50', iconColor: 'text-orange-600' },
   ];

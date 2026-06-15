@@ -76,6 +76,7 @@
   padding: 0 0.5rem;
   text-decoration: none;
   color: inherit;
+  position: relative;
 }
 
 @media (min-width: 640px) {

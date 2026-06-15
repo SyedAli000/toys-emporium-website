@@ -12,6 +12,7 @@ import {
   type EnrichedOrderItem,
 } from '@/lib/enrich-order-items';
 import { OrderReviewPanel } from '@/components/OrderReviewPanel';
+import { formatPrice } from '@/lib/currency';
 import '@/app/user/orders/orders.css';
 
 type OrderDetailViewProps = {
@@ -151,18 +152,18 @@ export function OrderDetailView({
               <div className="order-item-rich__info">
                 <p className="order-item-rich__name">{item.productName}</p>
                 <p className="order-item-rich__meta">
-                  ${Number(item.price).toFixed(2)} each · Qty {item.quantity}
+                  {formatPrice(item.price)} each · Qty {item.quantity}
                 </p>
               </div>
               <p className="order-item-rich__line-total">
-                ${(item.price * item.quantity).toFixed(2)}
+                {formatPrice(item.price * item.quantity)}
               </p>
             </div>
           ))}
         </div>
         <div className="order-detail-total">
           <span>Total</span>
-          <span>${order.totalAmount.toFixed(2)}</span>
+          <span>{formatPrice(order.totalAmount)}</span>
         </div>
       </div>
 

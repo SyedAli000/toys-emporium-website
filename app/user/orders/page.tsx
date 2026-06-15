@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Package, ArrowRight, Loader2, CheckCircle } from 'lucide-react';
 import { orderService } from '@/lib/services';
 import { Order } from '@/lib/types';
+import { formatPrice } from '@/lib/currency';
 import './orders.css';
 
 function OrdersContent() {
@@ -89,7 +90,7 @@ function OrdersContent() {
               </div>
               <div>
                 <p className="order-meta-label">Total</p>
-                <p className="order-meta-value">${order.totalAmount.toFixed(2)}</p>
+                <p className="order-meta-value">{formatPrice(order.totalAmount)}</p>
               </div>
               <div>
                 <p className="order-meta-label">Items</p>

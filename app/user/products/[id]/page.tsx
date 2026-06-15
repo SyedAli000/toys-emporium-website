@@ -23,10 +23,12 @@ import {
   getSalePrice,
   hasDiscount,
 } from '@/lib/product-pricing';
+import { formatPrice } from '@/lib/currency';
 import { useCart } from '@/contexts/CartContext';
 import { useAppPopup } from '@/contexts/AppPopupContext';
 import { PromoBanner } from '@/components/PromoBanner';
 import { ProductReviewsSection } from '@/components/ProductReviewsSection';
+import { WishlistHeart } from '@/components/WishlistHeart';
 import './product-detail.css';
 
 export default function ProductDetailPage() {
@@ -109,7 +111,11 @@ export default function ProductDetailPage() {
       <div className="product-detail-layout">
         {/* Image gallery */}
         <div className="product-gallery anim-fade-in">
-          <div className="product-gallery__main">
+          <div className="product-gallery__main product-gallery__main--wishlist">
+            <WishlistHeart
+              productId={product._id}
+              productName={product.name}
+            />
             {activeImage ? (
               <img src={activeImage} alt={product.name} />
             ) : (
@@ -170,10 +176,10 @@ export default function ProductDetailPage() {
           </div>
 
           <div className="product-info-panel__price-block">
-            <div className="product-info-panel__sale">${sale.toFixed(2)}</div>
+            <div className="product-info-panel__sale">{formatPrice(sale)}</div>
             {hasDiscount(product) && (
               <div className="mt-1">
-                <span className="product-info-panel__original">${original.toFixed(2)}</span>
+                <span className="product-info-panel__original">{formatPrice(original)}</span>
                 <span className="product-info-panel__discount">-{discount}%</span>
               </div>
             )}

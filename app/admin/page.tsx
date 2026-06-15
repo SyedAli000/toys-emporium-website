@@ -7,12 +7,13 @@ import Link from 'next/link';
 import {
   Package,
   Users,
-  DollarSign,
+  Banknote,
   TrendingUp,
   ShoppingCart,
   Loader2,
 } from 'lucide-react';
 import { analyticsService } from '@/lib/services';
+import { formatPrice } from '@/lib/currency';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -38,9 +39,9 @@ export default function AdminDashboard() {
   const statCards = [
     {
       title: 'Total Revenue',
-      value: `$${stats.totalRevenue.toFixed(2)}`,
+      value: formatPrice(stats.totalRevenue),
       change: stats.revenueChange,
-      icon: DollarSign,
+      icon: Banknote,
       color: 'bg-green-50',
       iconColor: 'text-green-600',
     },
@@ -120,7 +121,7 @@ export default function AdminDashboard() {
             <TrendingUp className="w-5 h-5" /> Analytics
           </h2>
           <p className="text-muted-foreground text-sm">
-            Revenue: ${stats.totalRevenue.toFixed(2)} from {stats.totalOrders} orders
+            Revenue: {formatPrice(stats.totalRevenue)} from {stats.totalOrders} orders
           </p>
         </Card>
       </div>

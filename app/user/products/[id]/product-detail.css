@@ -33,6 +33,10 @@
   overflow: hidden;
 }
 
+.product-gallery__main--wishlist {
+  position: relative;
+}
+
 .product-gallery__main img {
   max-width: 100%;
   max-height: 100%;

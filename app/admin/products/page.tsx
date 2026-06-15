@@ -8,6 +8,7 @@ import { ImageUploadField } from '@/components/ImageUploadField';
 import { MultiImageUploadField } from '@/components/MultiImageUploadField';
 import { resolveImageUrl } from '@/lib/image-url';
 import { getDiscountPercent, getSalePrice } from '@/lib/product-pricing';
+import { formatPrice } from '@/lib/currency';
 import { Package, Plus, Loader2, Trash2, Zap } from 'lucide-react';
 import { productService, categoryService } from '@/lib/services';
 import { Product, Category } from '@/lib/types';
@@ -241,10 +242,10 @@ export default function AdminProductsPage() {
                     </td>
                     <td className="p-4">{p.name}</td>
                     <td className="p-4">
-                      ${getSalePrice(p).toFixed(2)}
+                      {formatPrice(getSalePrice(p))}
                       {disc > 0 && (
                         <span className="text-xs text-muted-foreground block line-through">
-                          ${Number(p.price).toFixed(2)}
+                          {formatPrice(Number(p.price))}
                         </span>
                       )}
                     </td>
