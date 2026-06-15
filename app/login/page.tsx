@@ -10,7 +10,7 @@ import { z } from 'zod';
 import Cookies from 'js-cookie';
 import { api } from '@/lib/api';
 import { decodeToken } from '@/lib/auth';
-import { getDashboardPath, getRoleLabel } from '@/lib/auth-redirect';
+import { getDashboardPath } from '@/lib/auth-redirect';
 import { AlertCircle, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Logo } from '@/components/Logo';
@@ -165,30 +165,6 @@ export default function LoginPage() {
               Sign up
             </Link>
           </p>
-        </div>
-
-        <div className="mt-8 bg-blue-50 rounded-xl p-4 sm:p-6 border border-blue-200 overflow-x-auto">
-          <p className="text-sm font-medium text-foreground mb-3">Demo accounts</p>
-          <div className="space-y-2 text-sm text-muted-foreground">
-            <p className="break-words">
-              <strong>{getRoleLabel('customer')}:</strong>{' '}
-              <code className="bg-white px-2 py-0.5 rounded break-all">demo@example.com</code>
-              {' / '}
-              <code className="bg-white px-2 py-0.5 rounded">password123</code>
-            </p>
-            <p className="break-words">
-              <strong>{getRoleLabel('manager')}:</strong>{' '}
-              <code className="bg-white px-2 py-0.5 rounded break-all">manager@example.com</code>
-              {' / '}
-              <code className="bg-white px-2 py-0.5 rounded">password123</code>
-            </p>
-            <p className="break-words">
-              <strong>{getRoleLabel('admin')}:</strong>{' '}
-              <code className="bg-white px-2 py-0.5 rounded break-all">admin@example.com</code>
-              {' / '}
-              <code className="bg-white px-2 py-0.5 rounded">password123</code>
-            </p>
-          </div>
         </div>
       </div>
     </div>
