@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Menu, X, BarChart3, Package, Truck, Users, Settings, LogOut, Shield, Star } from 'lucide-react';
+import { Menu, X, BarChart3, Package, Truck, Users, Settings, LogOut, Star } from 'lucide-react';
 import { ManagerNotificationBell } from '@/components/ManagerNotificationBell';
 
 export default function ManagerLayout({
@@ -76,14 +76,6 @@ export default function ManagerLayout({
               </Link>
             );
           })}
-          {user?.role === 'manager' && (
-            <Link href="/manager/admin-login">
-              <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition">
-                <Shield className="w-5 h-5" />
-                <span className="font-medium">Admin Login</span>
-              </button>
-            </Link>
-          )}
         </nav>
 
         {/* Logout */}
@@ -130,14 +122,6 @@ export default function ManagerLayout({
                 </Link>
               );
             })}
-            {user?.role === 'manager' && (
-              <Link href="/manager/admin-login">
-                <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-foreground hover:bg-muted transition">
-                  <Shield className="w-5 h-5" />
-                  <span>Admin Login</span>
-                </button>
-              </Link>
-            )}
             <Button
               variant="ghost"
               className="w-full justify-start text-destructive hover:bg-destructive/10 mt-4"

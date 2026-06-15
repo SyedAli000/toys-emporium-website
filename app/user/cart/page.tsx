@@ -101,6 +101,13 @@ export default function CartPage() {
                 <h3 className="cart-item-name">{item.product?.name || 'Product'}</h3>
                 <p className="cart-item-meta">
                   Quantity: {item.quantity} · ${Number(item.price).toFixed(2)} each
+                  {item.product?.originalPrice &&
+                    item.product.originalPrice > item.price && (
+                      <span className="cart-item-original">
+                        {' '}
+                        (was ${item.product.originalPrice.toFixed(2)})
+                      </span>
+                    )}
                 </p>
                 <p className="cart-item-price">
                   ${(item.price * item.quantity).toFixed(2)}
@@ -125,12 +132,12 @@ export default function CartPage() {
             <span>Subtotal ({itemCount} items)</span>
             <strong>${subtotal.toFixed(2)}</strong>
           </div>
-          <div className="cart-summary-row">
-            <span>Shipping</span>
-            <strong>Free</strong>
-          </div>
+          <p className="cart-shipping-notice">
+            Shipping charges are not included. We will confirm the shipping cost
+            based on your city and area after you place the order.
+          </p>
           <div className="cart-summary-total">
-            <span>Total</span>
+            <span>Total (excl. shipping)</span>
             <span>${subtotal.toFixed(2)}</span>
           </div>
           <div className="cart-summary-actions">

@@ -35,7 +35,9 @@ function OrdersContent() {
     <div className="order-card mb-4 bg-green-50 border-green-200 flex items-center gap-3 p-4">
       <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
       <p className="text-green-800 font-medium text-sm">
-        Order placed successfully! Cash on Delivery — pay when you receive your package.
+        Order placed successfully! Cash on Delivery — pay when you receive your
+        package. Shipping cost for your city and area will be shared with you
+        shortly.
       </p>
     </div>
   );

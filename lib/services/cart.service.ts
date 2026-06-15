@@ -10,6 +10,8 @@ export interface CartItemResponse {
     name: string;
     images: string[];
     price: number;
+    originalPrice?: number;
+    discountPercentage?: number;
   };
 }
 

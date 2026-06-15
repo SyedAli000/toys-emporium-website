@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuth } from '@/hooks/useAuth';
+import { getDashboardPath } from '@/lib/auth-redirect';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -15,7 +16,7 @@ function UserLayoutInner({
 }: {
   children: React.ReactNode;
 }) {
-  const { isAuthenticated, isLoading, user, logout, canAccessManager } = useAuth();
+  const { isAuthenticated, isLoading, user, logout } = useAuth();
   const { cartCount, refreshCart } = useCart();
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -31,9 +32,9 @@ function UserLayoutInner({
       return;
     }
     if (user?.role !== 'customer') {
-      router.push(canAccessManager ? '/manager' : '/login');
+      router.push(getDashboardPath(user.role));
     }
-  }, [isAuthenticated, isLoading, user, canAccessManager, router]);
+  }, [isAuthenticated, isLoading, user, router]);
 
   if (isLoading) {
     return (

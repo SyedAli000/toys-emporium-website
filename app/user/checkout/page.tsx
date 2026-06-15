@@ -97,6 +97,9 @@ export default function CheckoutPage() {
         paymentMethod: 'cod',
         notes: notes || undefined,
       });
+      popup.success(
+        'Order placed successfully! Shipping cost for your city and area will be shared with you shortly.',
+      );
       router.push('/user/orders?placed=1');
     } catch {
       popup.error('Failed to place order. Please try again.');
@@ -317,6 +320,11 @@ export default function CheckoutPage() {
                   {address.fullName}, {address.streetAddress}, {address.city}
                 </p>
               </div>
+              <div className="checkout-shipping-notice">
+                Shipping charges are not included in this total. After placing
+                your order, we will contact you with the shipping price based on
+                your city and area ({address.city}).
+              </div>
               <div>
                 <label className="text-sm font-medium">Order notes (optional)</label>
                 <Input
@@ -359,10 +367,13 @@ export default function CheckoutPage() {
             <p className="text-sm text-muted-foreground mb-2">
               {cartItems.length} item(s)
             </p>
-            <div className="flex justify-between text-lg font-bold">
-              <span>Total</span>
+            <div className="flex justify-between text-lg font-bold mb-3">
+              <span>Subtotal</span>
               <span className="text-primary">${subtotal.toFixed(2)}</span>
             </div>
+            <p className="checkout-shipping-notice checkout-shipping-notice--compact">
+              Shipping cost will be confirmed based on your city and area.
+            </p>
           </Card>
         </div>
       </div>
