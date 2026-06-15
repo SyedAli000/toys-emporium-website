@@ -10,11 +10,13 @@ import { Order } from '@/lib/types';
 import { getOrderCustomerLabel } from '@/lib/enrich-order-items';
 import { formatPrice } from '@/lib/currency';
 import { AppSelect, ORDER_STATUS_OPTIONS } from '@/components/AppSelect';
+import { ShipOrderDialog } from '@/components/ShipOrderDialog';
 
 export default function ManagerOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState('all');
+  const [shipTarget, setShipTarget] = useState<Order | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -32,9 +34,22 @@ export default function ManagerOrdersPage() {
     load();
   }, [statusFilter]);
 
-  const updateStatus = async (id: string, status: string) => {
-    await orderService.updateStatus(id, { status });
+  const updateStatus = async (
+    id: string,
+    status: string,
+    trackingNumber?: string,
+  ) => {
+    await orderService.updateStatus(id, {
+      status,
+      ...(trackingNumber ? { trackingNumber } : {}),
+    });
     load();
+  };
+
+  const handleShipConfirm = async (trackingNumber?: string) => {
+    if (!shipTarget) return;
+    await updateStatus(shipTarget._id, 'shipped', trackingNumber);
+    setShipTarget(null);
   };
 
   if (loading) {
@@ -108,7 +123,7 @@ export default function ManagerOrdersPage() {
                         </Button>
                       )}
                       {o.status === 'confirmed' && (
-                        <Button size="sm" onClick={() => updateStatus(o._id, 'shipped')}>
+                        <Button size="sm" onClick={() => setShipTarget(o)}>
                           Ship
                         </Button>
                       )}
@@ -125,6 +140,15 @@ export default function ManagerOrdersPage() {
           </table>
         </Card>
       )}
+
+      <ShipOrderDialog
+        open={!!shipTarget}
+        onOpenChange={(open) => {
+          if (!open) setShipTarget(null);
+        }}
+        orderShortId={shipTarget?._id.slice(-8) ?? ''}
+        onConfirm={handleShipConfirm}
+      />
     </div>
   );
 }

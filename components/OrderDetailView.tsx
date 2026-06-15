@@ -12,6 +12,7 @@ import {
   type EnrichedOrderItem,
 } from '@/lib/enrich-order-items';
 import { OrderReviewPanel } from '@/components/OrderReviewPanel';
+import { ShipOrderDialog } from '@/components/ShipOrderDialog';
 import { formatPrice } from '@/lib/currency';
 import '@/app/user/orders/orders.css';
 
@@ -35,6 +36,7 @@ export function OrderDetailView({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [updating, setUpdating] = useState(false);
+  const [shipDialogOpen, setShipDialogOpen] = useState(false);
 
   const load = () => {
     setLoading(true);
@@ -56,15 +58,25 @@ export function OrderDetailView({
     if (orderId) load();
   }, [orderId]);
 
-  const updateStatus = async (status: OrderStatus) => {
+  const updateStatus = async (
+    status: OrderStatus,
+    trackingNumber?: string,
+  ) => {
     if (!order) return;
     setUpdating(true);
     try {
-      await orderService.updateStatus(order._id, { status });
+      await orderService.updateStatus(order._id, {
+        status,
+        ...(trackingNumber ? { trackingNumber } : {}),
+      });
       load();
     } finally {
       setUpdating(false);
     }
+  };
+
+  const handleShipConfirm = async (trackingNumber?: string) => {
+    await updateStatus('shipped', trackingNumber);
   };
 
   if (loading) {
@@ -194,7 +206,11 @@ export function OrderDetailView({
               </Button>
             )}
             {order.status === 'confirmed' && (
-              <Button size="sm" disabled={updating} onClick={() => updateStatus('shipped')}>
+              <Button
+                size="sm"
+                disabled={updating}
+                onClick={() => setShipDialogOpen(true)}
+              >
                 Mark Shipped
               </Button>
             )}
@@ -212,6 +228,15 @@ export function OrderDetailView({
           <h2>Rate your products</h2>
           <OrderReviewPanel items={items} />
         </div>
+      )}
+
+      {showStatusActions && (
+        <ShipOrderDialog
+          open={shipDialogOpen}
+          onOpenChange={setShipDialogOpen}
+          orderShortId={order._id.slice(-8)}
+          onConfirm={handleShipConfirm}
+        />
       )}
     </div>
   );

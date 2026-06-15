@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { PasswordInput } from '@/components/PasswordInput';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -134,8 +135,7 @@ export default function RegisterPage() {
 
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">Password</label>
-              <Input
-                type="password"
+              <PasswordInput
                 placeholder="••••••••"
                 {...register('password')}
                 className="w-full"
@@ -145,8 +145,7 @@ export default function RegisterPage() {
 
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">Confirm Password</label>
-              <Input
-                type="password"
+              <PasswordInput
                 placeholder="••••••••"
                 {...register('confirmPassword')}
                 className="w-full"
