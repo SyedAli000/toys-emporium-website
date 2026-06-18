@@ -49,7 +49,11 @@ export function Logo({
         alt="Toys Emporium — toy store"
         width={px}
         height={px}
-        className={cn('object-contain shrink-0 h-auto max-w-full', imageClassName)}
+        className={cn(
+          'object-contain h-auto',
+          centered ? 'mx-auto' : 'shrink-0 max-w-full',
+          imageClassName,
+        )}
         priority={size === 'lg' || size === 'xl' || size === '2xl' || size === '3xl' || size === 'hero'}
       />
       {subtitle && (
@@ -63,8 +67,9 @@ export function Logo({
       <Link
         href={href}
         className={cn(
-          'min-w-0 max-w-[55vw] sm:max-w-none',
-          centered ? 'flex w-full justify-center' : 'inline-flex',
+          centered
+            ? 'flex w-full max-w-full justify-center'
+            : 'inline-flex min-w-0 max-w-[55vw] sm:max-w-none',
         )}
       >
         {content}
