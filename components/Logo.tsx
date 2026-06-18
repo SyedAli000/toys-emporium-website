@@ -62,7 +62,10 @@ export function Logo({
     return (
       <Link
         href={href}
-        className={cn('inline-flex min-w-0 max-w-[55vw] sm:max-w-none', centered && 'mx-auto w-full justify-center')}
+        className={cn(
+          'min-w-0 max-w-[55vw] sm:max-w-none',
+          centered ? 'flex w-full justify-center' : 'inline-flex',
+        )}
       >
         {content}
       </Link>

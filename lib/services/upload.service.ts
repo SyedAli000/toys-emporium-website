@@ -13,6 +13,14 @@ export const uploadService = {
       },
     );
 
-    return data.url;
+    const url = data.url;
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      try {
+        return new URL(url).pathname;
+      } catch {
+        return url;
+      }
+    }
+    return url.startsWith('/') ? url : `/${url}`;
   },
 };

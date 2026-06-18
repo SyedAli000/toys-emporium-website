@@ -25,22 +25,41 @@ export function MultiImageUploadField({
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleFile = async (file: File | undefined) => {
-    if (!file || values.length >= max) return;
-    if (!file.type.startsWith('image/')) {
-      setError('Please choose an image file.');
-      return;
+  const handleFiles = async (fileList: FileList | null) => {
+    if (!fileList?.length || values.length >= max) return;
+
+    const remaining = max - values.length;
+    const files = Array.from(fileList).slice(0, remaining);
+    const validFiles: File[] = [];
+
+    for (const file of files) {
+      if (!file.type.startsWith('image/')) {
+        setError('Please choose image files only.');
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        setError('Each image must be smaller than 5 MB.');
+        return;
+      }
+      validFiles.push(file);
     }
-    if (file.size > 5 * 1024 * 1024) {
-      setError('Image must be smaller than 5 MB.');
-      return;
-    }
+
     setError('');
     setUploading(true);
+    const uploadedUrls: string[] = [];
+
     try {
-      const url = await uploadService.uploadImage(file);
-      onChange([...values, url]);
+      for (const file of validFiles) {
+        const url = await uploadService.uploadImage(file);
+        uploadedUrls.push(url);
+      }
+      if (uploadedUrls.length) {
+        onChange([...values, ...uploadedUrls]);
+      }
     } catch {
+      if (uploadedUrls.length) {
+        onChange([...values, ...uploadedUrls]);
+      }
       setError('Upload failed.');
     } finally {
       setUploading(false);
@@ -101,10 +120,11 @@ export function MultiImageUploadField({
         id={inputId}
         type="file"
         accept="image/*"
+        multiple
         className="hidden"
         disabled={uploading || values.length >= max}
         onChange={(e) => {
-          void handleFile(e.target.files?.[0]);
+          void handleFiles(e.target.files);
           e.target.value = '';
         }}
       />
