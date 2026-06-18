@@ -11,6 +11,7 @@ import { CartProvider, useCart } from '@/contexts/CartContext';
 import { AddToCartPopup } from '@/components/AddToCartPopup';
 import { SearchBar } from '@/components/SearchBar';
 import { Logo } from '@/components/Logo';
+import { UserNotificationBell } from '@/components/UserNotificationBell';
 
 function UserLayoutInner({
   children,
@@ -89,6 +90,7 @@ function UserLayoutInner({
               <div className="hidden sm:block">
                 <SearchBar variant="nav" />
               </div>
+              <UserNotificationBell />
               <Link href="/user/cart" className="p-2 hover:bg-muted rounded-lg transition relative">
                 <ShoppingCart className="w-5 h-5 text-foreground" />
                 <span className="absolute -top-1 -right-1 bg-orange-500 text-xs font-bold rounded-full min-w-[1.25rem] h-5 px-1 flex items-center justify-center text-white">
@@ -132,19 +134,19 @@ function UserLayoutInner({
               <div className="px-4 pt-3 sm:hidden">
                 <SearchBar variant="nav" />
               </div>
-              <Link href="/user/dashboard" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-muted rounded">
+              <Link href="/user/dashboard" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-muted rounded">
                 <Home className="w-4 h-4" />
                 Dashboard
               </Link>
-              <Link href="/user/products" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-muted rounded">
+              <Link href="/user/products" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-muted rounded">
                 <ShoppingCart className="w-4 h-4" />
                 Shop
               </Link>
-              <Link href="/user/orders" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-muted rounded">
+              <Link href="/user/orders" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-muted rounded">
                 <Package className="w-4 h-4" />
                 Orders
               </Link>
-              <Link href="/user/wishlist" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-muted rounded">
+              <Link href="/user/wishlist" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-muted rounded">
                 <Heart className="w-4 h-4" />
                 Wishlist
               </Link>

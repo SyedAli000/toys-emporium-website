@@ -91,12 +91,14 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-blue-50 to-background flex items-center justify-center px-4">
       <div className="w-full max-w-md">
-        <Logo
-          href="/"
-          centered
-          className="mb-8 sm:mb-10"
-          imageClassName="w-40 sm:w-48 md:w-56"
-        />
+        <div className="flex justify-center w-full">
+          <Logo
+            href="/"
+            centered
+            className="mb-8 sm:mb-10"
+            imageClassName="w-40 sm:w-48 md:w-56"
+          />
+        </div>
 
         {/* Card */}
         <div className="bg-white rounded-2xl border border-border shadow-lg p-8">

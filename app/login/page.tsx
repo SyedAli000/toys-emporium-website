@@ -94,12 +94,14 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-blue-50 to-background flex items-center justify-center px-4 py-8">
       <div className="w-full max-w-md">
-        <Logo
-          href="/"
-          centered
-          className="mb-8 sm:mb-10"
-          imageClassName="w-40 sm:w-48 md:w-56"
-        />
+        <div className="flex justify-center w-full">
+          <Logo
+            href="/"
+            centered
+            className="mb-8 sm:mb-10"
+            imageClassName="w-40 sm:w-48 md:w-56"
+          />
+        </div>
 
         <div className="bg-white rounded-2xl border border-border shadow-lg p-8">
           <h1 className="text-2xl font-bold text-foreground mb-2">Sign In</h1>
