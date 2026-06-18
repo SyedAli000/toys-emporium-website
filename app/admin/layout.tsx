@@ -100,7 +100,7 @@ export default function AdminLayout({
             {navItems.map((item) => {
               const IconComponent = item.icon;
               return (
-                <Link key={item.href} href={item.href}>
+                <Link key={item.href} href={item.href} onClick={() => setIsMenuOpen(false)}>
                   <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-foreground hover:bg-muted transition">
                     <IconComponent className="w-5 h-5" />
                     <span>{item.label}</span>
