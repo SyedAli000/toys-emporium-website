@@ -32,7 +32,11 @@ apiClient.interceptors.response.use(
         const isPublic =
           path.startsWith('/login') ||
           path.startsWith('/register') ||
-          path === '/';
+          path === '/' ||
+          path.startsWith('/user/products') ||
+          path.startsWith('/user/cart') ||
+          path.startsWith('/user/checkout') ||
+          path.startsWith('/user/order-placed');
         if (!isPublic) {
           window.location.href = '/login';
         }

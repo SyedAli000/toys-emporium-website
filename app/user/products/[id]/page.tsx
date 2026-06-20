@@ -63,7 +63,11 @@ export default function ProductDetailPage() {
     setAdding(true);
     try {
       for (let i = 0; i < qty; i++) {
-        await cartService.add(product._id);
+        await cartService.add(product._id, 1, {
+          name: product.name,
+          price: getSalePrice(product),
+          images: product.images,
+        });
       }
       await refreshCart();
       showAddToCartPopup(product.name);

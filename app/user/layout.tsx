@@ -1,170 +1,100 @@
 'use client';
 
-import { useAuth } from '@/hooks/useAuth';
-import { getDashboardPath } from '@/lib/auth-redirect';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Menu, X, Home, ShoppingCart, Heart, Package, User, LogOut } from 'lucide-react';
-import { CartProvider, useCart } from '@/contexts/CartContext';
+import { Menu, X, ShoppingCart, LogIn } from 'lucide-react';
+import { useCart } from '@/contexts/CartContext';
 import { AddToCartPopup } from '@/components/AddToCartPopup';
 import { SearchBar } from '@/components/SearchBar';
 import { Logo } from '@/components/Logo';
-import { UserNotificationBell } from '@/components/UserNotificationBell';
 
-function UserLayoutInner({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const { isAuthenticated, isLoading, user, logout } = useAuth();
-  const { cartCount, refreshCart } = useCart();
-  const router = useRouter();
+function ShopLayoutInner({ children }: { children: React.ReactNode }) {
+  const { cartCount } = useCart();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  useEffect(() => {
-    refreshCart();
-  }, [refreshCart]);
-
-  useEffect(() => {
-    if (isLoading) return;
-    if (!isAuthenticated) {
-      router.push('/login');
-      return;
-    }
-    if (user?.role !== 'customer') {
-      router.push(getDashboardPath(user.role));
-    }
-  }, [isAuthenticated, isLoading, user, router]);
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin">
-          <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full"></div>
-        </div>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated || user?.role !== 'customer') {
-    return null;
-  }
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Top Navigation */}
       <nav className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-border shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <Logo
-              href="/"
-              size="md"
-              imageClassName="w-24 sm:w-28 md:w-32"
-            />
+            <Logo href="/" size="md" imageClassName="w-24 sm:w-28 md:w-32" />
 
-            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-8">
-              <Link href="/user/dashboard" className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition">
-                <Home className="w-4 h-4" />
-                Dashboard
-              </Link>
-              <Link href="/user/products" className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition">
+              <Link
+                href="/user/products"
+                className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition"
+              >
                 <ShoppingCart className="w-4 h-4" />
                 Shop
               </Link>
-              <Link href="/user/orders" className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition">
-                <Package className="w-4 h-4" />
-                Orders
-              </Link>
-              <Link href="/user/wishlist" className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition">
-                <Heart className="w-4 h-4" />
-                Wishlist
-              </Link>
             </div>
 
-            {/* Right Actions */}
             <div className="flex items-center gap-2 sm:gap-4 shrink-0">
               <div className="hidden sm:block">
                 <SearchBar variant="nav" />
               </div>
-              <UserNotificationBell />
-              <Link href="/user/cart" className="p-2 hover:bg-muted rounded-lg transition relative">
+              <Link
+                href="/user/cart"
+                className="p-2 hover:bg-muted rounded-lg transition relative"
+              >
                 <ShoppingCart className="w-5 h-5 text-foreground" />
                 <span className="absolute -top-1 -right-1 bg-orange-500 text-xs font-bold rounded-full min-w-[1.25rem] h-5 px-1 flex items-center justify-center text-white">
                   {cartCount > 99 ? '99+' : cartCount}
                 </span>
               </Link>
 
-              <div className="hidden md:flex items-center gap-2 min-w-0">
-                <div className="flex items-center gap-2 px-3 py-1 bg-muted rounded-lg max-w-[12rem] lg:max-w-xs">
-                  <User className="w-4 h-4 text-foreground shrink-0" />
-                  <span className="text-sm text-foreground truncate">{user?.email}</span>
-                </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={logout}
-                  className="text-destructive hover:bg-destructive/10"
-                >
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Logout
-                </Button>
-              </div>
+              <Link
+                href="/login"
+                className="hidden sm:inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-foreground border border-border rounded-lg hover:bg-muted transition"
+              >
+                <LogIn className="w-4 h-4" />
+                Staff Login
+              </Link>
 
-              {/* Mobile Menu Toggle */}
               <button
                 className="md:hidden p-2"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
+                aria-label="Toggle menu"
               >
-                {isMenuOpen ? (
-                  <X className="w-5 h-5" />
-                ) : (
-                  <Menu className="w-5 h-5" />
-                )}
+                {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
             </div>
           </div>
 
-          {/* Mobile Navigation */}
           {isMenuOpen && (
             <div className="md:hidden pb-4 border-t border-border max-h-[calc(100vh-4rem)] overflow-y-auto">
               <div className="px-4 pt-3 sm:hidden">
                 <SearchBar variant="nav" />
               </div>
-              <Link href="/user/dashboard" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-muted rounded">
-                <Home className="w-4 h-4" />
-                Dashboard
-              </Link>
-              <Link href="/user/products" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-muted rounded">
+              <Link
+                href="/user/products"
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-muted rounded"
+              >
                 <ShoppingCart className="w-4 h-4" />
                 Shop
               </Link>
-              <Link href="/user/orders" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-muted rounded">
-                <Package className="w-4 h-4" />
-                Orders
-              </Link>
-              <Link href="/user/wishlist" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-muted rounded">
-                <Heart className="w-4 h-4" />
-                Wishlist
-              </Link>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={logout}
-                className="w-full justify-start text-destructive hover:bg-destructive/10 mt-2"
+              <Link
+                href="/user/cart"
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-muted rounded"
               >
-                <LogOut className="w-4 h-4 mr-2" />
-                Logout
-              </Button>
+                <ShoppingCart className="w-4 h-4" />
+                Cart ({cartCount})
+              </Link>
+              <Link
+                href="/login"
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-muted rounded"
+              >
+                <LogIn className="w-4 h-4" />
+                Staff Login
+              </Link>
             </div>
           )}
         </div>
       </nav>
 
-      {/* Main Content */}
       <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col items-center">
         <div className="w-full">{children}</div>
       </main>
@@ -173,14 +103,6 @@ function UserLayoutInner({
   );
 }
 
-export default function UserLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <CartProvider>
-      <UserLayoutInner>{children}</UserLayoutInner>
-    </CartProvider>
-  );
+export default function UserLayout({ children }: { children: React.ReactNode }) {
+  return <ShopLayoutInner>{children}</ShopLayoutInner>;
 }

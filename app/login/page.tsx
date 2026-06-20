@@ -11,8 +11,8 @@ import { z } from 'zod';
 import Cookies from 'js-cookie';
 import { api } from '@/lib/api';
 import { decodeToken } from '@/lib/auth';
-import { getDashboardPath } from '@/lib/auth-redirect';
-import { AlertCircle, Loader2 } from 'lucide-react';
+import { getDashboardPath, isStaffRole } from '@/lib/auth-redirect';
+import { AlertCircle, Loader2, Shield } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Logo } from '@/components/Logo';
 
@@ -43,11 +43,13 @@ export default function LoginPage() {
     const token = Cookies.get('auth_token');
     if (token) {
       const session = decodeToken(token);
-      if (session) {
+      if (session && isStaffRole(session.role)) {
         router.replace(getDashboardPath(session.role));
         return;
       }
-      Cookies.remove('auth_token', { path: '/' });
+      if (session?.role === 'customer') {
+        Cookies.remove('auth_token', { path: '/' });
+      }
     }
     setCheckingSession(false);
   }, [router]);
@@ -62,19 +64,34 @@ export default function LoginPage() {
         { email: data.email, password: data.password },
       );
 
-      Cookies.set('auth_token', response.token, cookieOptions);
       const session = decodeToken(response.token);
 
       if (!session) {
-        Cookies.remove('auth_token', { path: '/' });
         setError('Could not start session. Please try again.');
         return;
       }
 
-      const destination = getDashboardPath(session.role);
-      window.location.href = destination;
+      if (!isStaffRole(session.role)) {
+        setError(
+          'This login is for admin and manager staff only. Customers can shop without an account.',
+        );
+        return;
+      }
+
+      Cookies.set('auth_token', response.token, cookieOptions);
+      window.location.href = getDashboardPath(session.role);
     } catch (err: unknown) {
-      const axiosErr = err as { response?: { data?: { message?: string } } };
+      const axiosErr = err as {
+        response?: { data?: { message?: string } };
+        code?: string;
+        message?: string;
+      };
+      if (!axiosErr.response) {
+        setError(
+          'Cannot reach the backend API. Start it with: cd toys-emporium-backend && yarn start:dev',
+        );
+        return;
+      }
       setError(
         axiosErr.response?.data?.message || 'Login failed. Please try again.',
       );
@@ -104,10 +121,17 @@ export default function LoginPage() {
         </div>
 
         <div className="bg-white rounded-2xl border border-border shadow-lg p-8">
-          <h1 className="text-2xl font-bold text-foreground mb-2">Sign In</h1>
-          <p className="text-muted-foreground mb-8">
-            Enter your credentials — you will be redirected to your panel
-            automatically based on your role.
+          <div className="flex items-center gap-2 mb-2">
+            <Shield className="w-6 h-6 text-primary" />
+            <h1 className="text-2xl font-bold text-foreground">Staff Login</h1>
+          </div>
+          <p className="text-muted-foreground mb-4">
+            Admin and manager only. Enter your credentials to open your panel.
+          </p>
+
+          <p className="text-xs text-muted-foreground bg-muted/50 rounded-lg px-3 py-2 mb-6">
+            Local dev: ensure backend is running on port 3001 (
+            <code className="text-xs">yarn start:dev</code> in backend folder).
           </p>
 
           {error && (
@@ -124,7 +148,7 @@ export default function LoginPage() {
               </label>
               <Input
                 type="email"
-                placeholder="you@example.com"
+                placeholder="admin@toys-emporium.com"
                 {...register('email')}
                 className="w-full"
               />
@@ -156,15 +180,14 @@ export default function LoginPage() {
                   Signing in...
                 </>
               ) : (
-                'Sign In'
+                'Sign In to Panel'
               )}
             </Button>
           </form>
 
           <p className="text-center text-sm text-muted-foreground mt-6">
-            Don&apos;t have an account?{' '}
-            <Link href="/register" className="text-primary font-semibold hover:underline">
-              Sign up
+            <Link href="/" className="text-primary font-semibold hover:underline">
+              Back to shop
             </Link>
           </p>
         </div>

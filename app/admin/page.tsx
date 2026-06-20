@@ -1,103 +1,80 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import {
   Package,
-  Users,
   Banknote,
   TrendingUp,
   ShoppingCart,
-  Loader2,
+  ClipboardList,
 } from 'lucide-react';
-import { analyticsService } from '@/lib/services';
 import { formatPrice } from '@/lib/currency';
+import {
+  DashboardMonthFilter,
+  DashboardEarningsNote,
+  DashboardLoading,
+  useDashboardStats,
+} from '@/components/DashboardMonthFilter';
 
 export default function AdminDashboard() {
-  const [stats, setStats] = useState({
-    totalRevenue: 0,
-    totalOrders: 0,
-    totalUsers: 0,
-    totalProducts: 0,
-    revenueChange: '+0%',
-    ordersChange: '+0%',
-    usersChange: '+0%',
-    productsChange: '+0%',
-  });
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    analyticsService
-      .dashboard()
-      .then(setStats)
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, []);
+  const { stats, loading, month, year, setPeriod } = useDashboardStats();
 
   const statCards = [
     {
-      title: 'Total Revenue',
-      value: formatPrice(stats.totalRevenue),
-      change: stats.revenueChange,
+      title: `Revenue (${stats.monthLabel})`,
+      value: formatPrice(stats.totalRevenue ?? 0),
       icon: Banknote,
       color: 'bg-green-50',
       iconColor: 'text-green-600',
     },
     {
-      title: 'Total Orders',
-      value: String(stats.totalOrders),
-      change: stats.ordersChange,
+      title: 'Shipped Orders',
+      value: String(stats.shippedOrders ?? 0),
       icon: ShoppingCart,
       color: 'bg-blue-50',
       iconColor: 'text-blue-600',
     },
     {
-      title: 'Total Users',
-      value: String(stats.totalUsers),
-      change: stats.usersChange,
-      icon: Users,
-      color: 'bg-purple-50',
-      iconColor: 'text-purple-600',
+      title: 'Pending Orders',
+      value: String(stats.pendingOrders ?? 0),
+      icon: ClipboardList,
+      color: 'bg-amber-50',
+      iconColor: 'text-amber-600',
     },
     {
       title: 'Products',
-      value: String(stats.totalProducts),
-      change: stats.productsChange,
+      value: String(stats.totalProducts ?? 0),
       icon: Package,
       color: 'bg-orange-50',
       iconColor: 'text-orange-600',
     },
   ];
 
-  if (loading) {
-    return (
-      <div className="flex justify-center py-24">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
-      </div>
-    );
-  }
+  if (loading) return <DashboardLoading />;
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground">Admin Dashboard</h1>
-        <p className="text-muted-foreground mt-2">Complete overview of your e-commerce platform</p>
+      <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground">Admin Dashboard</h1>
+          <p className="text-muted-foreground mt-2">
+            Monthly revenue from shipped orders
+          </p>
+        </div>
+        <DashboardMonthFilter month={month} year={year} onChange={setPeriod} />
       </div>
+
+      <DashboardEarningsNote monthLabel={stats.monthLabel} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {statCards.map((stat) => {
           const IconComponent = stat.icon;
           return (
             <Card key={stat.title} className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className={`w-12 h-12 ${stat.color} rounded-lg flex items-center justify-center`}>
-                  <IconComponent className={`w-6 h-6 ${stat.iconColor}`} />
-                </div>
-                <span className="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded">
-                  {stat.change}
-                </span>
+              <div className={`w-12 h-12 ${stat.color} rounded-lg flex items-center justify-center mb-4`}>
+                <IconComponent className={`w-6 h-6 ${stat.iconColor}`} />
               </div>
               <h3 className="text-sm text-muted-foreground font-medium">{stat.title}</h3>
               <p className="text-2xl font-bold text-foreground mt-1">{stat.value}</p>
@@ -118,10 +95,14 @@ export default function AdminDashboard() {
         </Card>
         <Card className="p-6">
           <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
-            <TrendingUp className="w-5 h-5" /> Analytics
+            <TrendingUp className="w-5 h-5" /> Monthly Earnings
           </h2>
           <p className="text-muted-foreground text-sm">
-            Revenue: {formatPrice(stats.totalRevenue)} from {stats.totalOrders} orders
+            {formatPrice(stats.totalRevenue ?? 0)} from {stats.shippedOrders ?? 0} shipped orders in{' '}
+            {stats.monthLabel}
+          </p>
+          <p className="text-muted-foreground text-sm mt-2">
+            All-time orders placed: {stats.totalOrders ?? 0}
           </p>
         </Card>
       </div>

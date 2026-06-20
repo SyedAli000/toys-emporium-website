@@ -54,7 +54,11 @@ export default function ProductsPage() {
   const handleAddToCart = async (product: Product) => {
     setActionLoading(`cart-${product._id}`);
     try {
-      await cartService.add(product._id);
+      await cartService.add(product._id, 1, {
+        name: product.name,
+        price: product.price,
+        images: product.images,
+      });
       await refreshCart();
       showAddToCartPopup(product.name);
     } catch {

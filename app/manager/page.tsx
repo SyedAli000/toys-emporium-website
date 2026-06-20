@@ -1,57 +1,65 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Package, Truck, Banknote, Users, Loader2 } from 'lucide-react';
-import { analyticsService } from '@/lib/services';
+import { Package, Truck, Banknote, ClipboardList } from 'lucide-react';
 import { formatPrice } from '@/lib/currency';
+import {
+  DashboardMonthFilter,
+  DashboardEarningsNote,
+  DashboardLoading,
+  useDashboardStats,
+} from '@/components/DashboardMonthFilter';
 
 export default function ManagerDashboard() {
-  const [stats, setStats] = useState({
-    totalOrders: 0,
-    totalRevenue: 0,
-    totalUsers: 0,
-    totalProducts: 0,
-  });
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    analyticsService
-      .dashboard()
-      .then((d) =>
-        setStats({
-          totalOrders: d.totalOrders,
-          totalRevenue: d.totalRevenue,
-          totalUsers: d.totalUsers,
-          totalProducts: d.totalProducts,
-        }),
-      )
-      .finally(() => setLoading(false));
-  }, []);
+  const { stats, loading, month, year, setPeriod } = useDashboardStats();
 
   const statCards = [
-    { title: 'Total Orders', value: String(stats.totalOrders), icon: Package, color: 'bg-blue-50', iconColor: 'text-blue-600' },
-    { title: 'Revenue', value: formatPrice(stats.totalRevenue), icon: Banknote, color: 'bg-green-50', iconColor: 'text-green-600' },
-    { title: 'Customers', value: String(stats.totalUsers), icon: Users, color: 'bg-purple-50', iconColor: 'text-purple-600' },
-    { title: 'Products', value: String(stats.totalProducts), icon: Truck, color: 'bg-orange-50', iconColor: 'text-orange-600' },
+    {
+      title: `Revenue (${stats.monthLabel})`,
+      value: formatPrice(stats.totalRevenue ?? 0),
+      icon: Banknote,
+      color: 'bg-green-50',
+      iconColor: 'text-green-600',
+    },
+    {
+      title: 'Shipped Orders',
+      value: String(stats.shippedOrders ?? 0),
+      icon: Truck,
+      color: 'bg-blue-50',
+      iconColor: 'text-blue-600',
+    },
+    {
+      title: 'Pending Orders',
+      value: String(stats.pendingOrders ?? 0),
+      icon: ClipboardList,
+      color: 'bg-amber-50',
+      iconColor: 'text-amber-600',
+    },
+    {
+      title: 'Products',
+      value: String(stats.totalProducts ?? 0),
+      icon: Package,
+      color: 'bg-orange-50',
+      iconColor: 'text-orange-600',
+    },
   ];
 
-  if (loading) {
-    return (
-      <div className="flex justify-center py-24">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
-      </div>
-    );
-  }
+  if (loading) return <DashboardLoading />;
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground">Manager Dashboard</h1>
-        <p className="text-muted-foreground mt-2">Overview of orders and inventory</p>
+      <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground">Manager Dashboard</h1>
+          <p className="text-muted-foreground mt-2">
+            Monthly revenue from shipped orders
+          </p>
+        </div>
+        <DashboardMonthFilter month={month} year={year} onChange={setPeriod} />
       </div>
+
+      <DashboardEarningsNote monthLabel={stats.monthLabel} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {statCards.map((stat) => {
@@ -68,23 +76,39 @@ export default function ManagerDashboard() {
         })}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Link href="/manager/orders">
-          <Card className="p-6 hover:shadow-lg transition cursor-pointer">
-            <Package className="w-8 h-8 text-primary mb-4" />
-            <h3 className="font-semibold">Manage Orders</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Link href="/manager/orders" className="block h-full">
+          <Card className="p-6 h-full hover:shadow-lg transition cursor-pointer border-primary/20">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
+                <Truck className="w-6 h-6 text-primary" />
+              </div>
+              <div className="min-w-0">
+                <h3 className="font-semibold text-lg text-foreground">Manage Orders</h3>
+                <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
+                  Confirm pending orders, then press <strong>Ship</strong> to add revenue for{' '}
+                  {stats.monthLabel}.
+                </p>
+                <p className="text-sm font-medium text-primary mt-3">
+                  {stats.pendingOrders ?? 0} pending · {stats.shippedOrders ?? 0} shipped this month
+                </p>
+              </div>
+            </div>
           </Card>
         </Link>
-        <Link href="/manager/inventory">
-          <Card className="p-6 hover:shadow-lg transition cursor-pointer">
-            <Truck className="w-8 h-8 text-primary mb-4" />
-            <h3 className="font-semibold">Inventory</h3>
-          </Card>
-        </Link>
-        <Link href="/manager/customers">
-          <Card className="p-6 hover:shadow-lg transition cursor-pointer">
-            <Users className="w-8 h-8 text-primary mb-4" />
-            <h3 className="font-semibold">Customers</h3>
+        <Link href="/manager/inventory" className="block h-full">
+          <Card className="p-6 h-full hover:shadow-lg transition cursor-pointer">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center shrink-0">
+                <Package className="w-6 h-6 text-orange-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-lg text-foreground">Inventory</h3>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Update stock and product availability.
+                </p>
+              </div>
+            </div>
           </Card>
         </Link>
       </div>

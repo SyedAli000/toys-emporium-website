@@ -7,6 +7,12 @@ export const orderService = {
     notes?: string;
     paymentMethod?: 'cod';
   }) => api.post<Order>('/orders', data),
+  createGuest: (data: {
+    items: { productId: string; quantity: number }[];
+    shippingAddress: Address;
+    notes?: string;
+    paymentMethod?: 'cod';
+  }) => api.post<Order>('/orders/guest', data),
   getMine: () => api.get<Order[]>('/orders'),
   getOne: (id: string) => api.get<Order>(`/orders/${id}`),
   getAllAdmin: (params?: Record<string, string>) => {

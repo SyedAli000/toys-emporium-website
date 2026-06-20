@@ -1,36 +1,19 @@
 'use client';
 
 import Link from 'next/link';
-import { ShoppingCart, Menu, User, LogOut } from 'lucide-react';
+import { ShoppingCart, Menu, LogIn } from 'lucide-react';
 import { SearchBar } from '@/components/SearchBar';
 import { HeroButton } from '@/components/HeroButton';
-import { useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
-import { decodeToken } from '@/lib/auth';
-import { AuthToken } from '@/lib/types';
+import { useState } from 'react';
 import { PromoBanner } from '@/components/PromoBanner';
 import { FeaturedProductsSection } from '@/components/FeaturedProductsSection';
 import { AnimateIn } from '@/components/AnimateIn';
 import { Logo } from '@/components/Logo';
+import { useCart } from '@/contexts/CartContext';
 
 export default function Page() {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const [user, setUser] = useState<AuthToken | null>(null);
-
-  useEffect(() => {
-    const token = Cookies.get('auth_token');
-    if (token) {
-      const decoded = decodeToken(token);
-      setUser(decoded);
-    }
-  }, []);
-
-  const handleLogout = () => {
-    Cookies.remove('auth_token');
-    setUser(null);
-    window.location.reload();
-  };
+  const { cartCount } = useCart();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-blue-50 to-background">
@@ -50,80 +33,30 @@ export default function Page() {
               <Link href="/user/products" className="text-sm font-medium text-foreground hover:text-primary transition">
                 Shop
               </Link>
-              <Link href="/user/orders" className="text-sm font-medium text-foreground hover:text-primary transition">
-                Orders
-              </Link>
-              <Link href="/user/wishlist" className="text-sm font-medium text-foreground hover:text-primary transition">
-                Wishlist
-              </Link>
             </div>
 
-            {/* Right Actions */}
             <div className="flex items-center gap-2 sm:gap-4 shrink-0">
               <div className="hidden sm:block">
                 <SearchBar variant="nav" />
               </div>
               <Link href="/user/cart" className="p-2 hover:bg-muted rounded-lg transition relative">
                 <ShoppingCart className="w-5 h-5 text-foreground" />
-                <span className="absolute -top-1 -right-1 bg-accent text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center text-white">
-                  0
+                <span className="absolute -top-1 -right-1 bg-accent text-xs font-bold rounded-full min-w-[1.25rem] h-5 px-1 flex items-center justify-center text-white">
+                  {cartCount > 99 ? '99+' : cartCount}
                 </span>
               </Link>
 
-              {user ? (
-                <div className="hidden md:flex items-center gap-2 relative">
-                  <button
-                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                    className="p-2 hover:bg-muted rounded-lg transition"
-                  >
-                    <User className="w-5 h-5 text-foreground" />
-                  </button>
-                  {isUserMenuOpen && (
-                    <div className="absolute top-14 right-0 bg-white border border-border rounded-lg shadow-lg p-2 min-w-48 z-50">
-                      <div className="px-3 py-2 text-sm font-medium text-foreground border-b border-border break-all">
-                        {user.email}
-                      </div>
-                      {user.role !== 'customer' && (
-                        <>
-                          {user.role === 'manager' && (
-                            <Link href="/manager" className="block px-3 py-2 text-sm text-foreground hover:bg-muted rounded">
-                              Manager Dashboard
-                            </Link>
-                          )}
-                          {(user.role === 'admin' || user.role === 'super_admin') && (
-                            <Link href="/admin" className="block px-3 py-2 text-sm text-foreground hover:bg-muted rounded">
-                              Admin Dashboard
-                            </Link>
-                          )}
-                        </>
-                      )}
-                      <button
-                        onClick={handleLogout}
-                        className="w-full text-left px-3 py-2 text-sm text-destructive hover:bg-muted rounded flex items-center gap-2"
-                      >
-                        <LogOut className="w-4 h-4" />
-                        Logout
-                      </button>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div className="hidden sm:flex items-center gap-2">
-                  <HeroButton href="/login" variant="nav-login">
-                    Login
-                  </HeroButton>
-                  <HeroButton href="/register" variant="nav-signup">
-                    Sign Up
-                  </HeroButton>
-                </div>
-              )}
+              <Link
+                href="/login"
+                className="hidden sm:inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-foreground border border-border rounded-lg hover:bg-muted transition"
+              >
+                <LogIn className="w-4 h-4" />
+                Staff Login
+              </Link>
 
               <button
                 className="md:hidden p-2"
-                onClick={() => {
-                  setIsMobileNavOpen(!isMobileNavOpen);
-                  setIsUserMenuOpen(false);
-                }}
+                onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}
                 aria-label="Toggle menu"
               >
                 <Menu className="w-5 h-5" />
@@ -141,55 +74,24 @@ export default function Page() {
                 Shop
               </Link>
               <Link
-                href="/user/orders"
+                href="/user/cart"
                 className="block px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted rounded-lg"
                 onClick={() => setIsMobileNavOpen(false)}
               >
-                Orders
-              </Link>
-              <Link
-                href="/user/wishlist"
-                className="block px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted rounded-lg"
-                onClick={() => setIsMobileNavOpen(false)}
-              >
-                Wishlist
+                Cart ({cartCount})
               </Link>
 
               <div className="px-4 pt-2 sm:hidden">
                 <SearchBar variant="nav" />
               </div>
-
-              {user ? (
-                <div className="px-4 pt-2 space-y-1 border-t border-border mt-2">
-                  <p className="text-xs text-muted-foreground py-2 break-all">{user.email}</p>
-                  {user.role === 'manager' && (
-                    <Link href="/manager" className="block py-2 text-sm text-foreground hover:text-primary" onClick={() => setIsMobileNavOpen(false)}>
-                      Manager Dashboard
-                    </Link>
-                  )}
-                  {(user.role === 'admin' || user.role === 'super_admin') && (
-                    <Link href="/admin" className="block py-2 text-sm text-foreground hover:text-primary" onClick={() => setIsMobileNavOpen(false)}>
-                      Admin Dashboard
-                    </Link>
-                  )}
-                  <button
-                    onClick={handleLogout}
-                    className="w-full text-left py-2 text-sm text-destructive flex items-center gap-2"
-                  >
-                    <LogOut className="w-4 h-4" />
-                    Logout
-                  </button>
-                </div>
-              ) : (
-                <div className="flex flex-col gap-2 px-4 pt-3 sm:hidden">
-                  <HeroButton href="/login" variant="nav-login" className="w-full justify-center">
-                    Login
-                  </HeroButton>
-                  <HeroButton href="/register" variant="nav-signup" className="w-full justify-center">
-                    Sign Up
-                  </HeroButton>
-                </div>
-              )}
+              <Link
+                href="/login"
+                className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted rounded-lg"
+                onClick={() => setIsMobileNavOpen(false)}
+              >
+                <LogIn className="w-4 h-4" />
+                Staff Login
+              </Link>
             </div>
           )}
         </div>
@@ -338,7 +240,12 @@ export default function Page() {
               </ul>
             </div>
           </div>
-          <div className="border-t border-border pt-8 text-center text-muted-foreground text-sm">
+          <div className="border-t border-border pt-8 text-center text-muted-foreground text-sm space-y-2">
+            <p>
+              <Link href="/login" className="hover:text-primary">
+                Staff login
+              </Link>
+            </p>
             <p>&copy; 2024 Toys Emporium. All rights reserved.</p>
           </div>
         </div>

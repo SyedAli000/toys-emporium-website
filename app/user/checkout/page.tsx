@@ -8,7 +8,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Loader2, MapPin, CreditCard, ClipboardList, Check } from 'lucide-react';
 import { cartService, orderService, CartItemResponse } from '@/lib/services';
+import { guestCart } from '@/lib/guest-cart';
+import Cookies from 'js-cookie';
 import { useAppPopup } from '@/contexts/AppPopupContext';
+import { useCart } from '@/contexts/CartContext';
 import { formatPrice } from '@/lib/currency';
 import './checkout.css';
 
@@ -17,6 +20,7 @@ type Step = 1 | 2 | 3;
 export default function CheckoutPage() {
   const router = useRouter();
   const popup = useAppPopup();
+  const { refreshCart } = useCart();
   const [step, setStep] = useState<Step>(1);
   const [cartItems, setCartItems] = useState<CartItemResponse[]>([]);
   const [loading, setLoading] = useState(true);
@@ -80,28 +84,48 @@ export default function CheckoutPage() {
     }
     setPlacing(true);
     try {
-      await orderService.create({
-        shippingAddress: {
-          fullName: address.fullName,
-          phone: address.phone,
-          email: address.email,
-          address: [address.streetAddress, address.landmark]
-            .filter(Boolean)
-            .join(', '),
-          city: address.city,
-          state: address.city,
-          zipCode: address.zipCode,
-          country: address.country,
-          userId: '',
-          isDefault: true,
-        },
-        paymentMethod: 'cod',
-        notes: notes || undefined,
-      });
+      const shippingAddress = {
+        fullName: address.fullName,
+        phone: address.phone,
+        email: address.email,
+        address: [address.streetAddress, address.landmark]
+          .filter(Boolean)
+          .join(', '),
+        city: address.city,
+        state: address.city,
+        zipCode: address.zipCode,
+        country: address.country,
+        userId: '',
+        isDefault: true,
+      };
+
+      let orderId = '';
+      if (Cookies.get('auth_token')) {
+        const order = await orderService.create({
+          shippingAddress,
+          paymentMethod: 'cod',
+          notes: notes || undefined,
+        });
+        orderId = order._id;
+      } else {
+        const order = await orderService.createGuest({
+          items: cartItems.map((item) => ({
+            productId: item.productId,
+            quantity: item.quantity,
+          })),
+          shippingAddress,
+          paymentMethod: 'cod',
+          notes: notes || undefined,
+        });
+        orderId = order._id;
+        guestCart.clear();
+        await refreshCart();
+      }
+
       popup.success(
         'Order placed successfully! Shipping cost for your city and area will be shared with you shortly.',
       );
-      router.push('/user/orders?placed=1');
+      router.push(`/user/order-placed?id=${orderId}`);
     } catch {
       popup.error('Failed to place order. Please try again.');
     } finally {

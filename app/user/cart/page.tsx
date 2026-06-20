@@ -117,7 +117,7 @@ export default function CartPage() {
 
               <button
                 type="button"
-                onClick={() => item._id && handleRemove(item._id)}
+                onClick={() => handleRemove(item._id || item.productId)}
                 className="cart-item-remove"
                 aria-label="Remove from cart"
               >
