@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import { ShopToolbar } from '@/components/ShopToolbar';
@@ -13,7 +13,7 @@ import { FlashSaleSection } from '@/components/FlashSaleSection';
 import { JustForYouGrid } from '@/components/JustForYouGrid';
 import { PRODUCT_SORT_OPTIONS } from '@/components/AppSelect';
 
-export default function ProductsPage() {
+function ProductsContent() {
   const searchParams = useSearchParams();
   const initialSearch = searchParams.get('search') || '';
   const [flashSale, setFlashSale] = useState<Product[]>([]);
@@ -110,5 +110,19 @@ export default function ProductsPage() {
         <p className="text-center text-muted-foreground py-12">No products found.</p>
       )}
     </div>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex justify-center py-24">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      }
+    >
+      <ProductsContent />
+    </Suspense>
   );
 }
