@@ -87,9 +87,7 @@ export default function LoginPage() {
         message?: string;
       };
       if (!axiosErr.response) {
-        setError(
-          'Cannot reach the backend API. Start it with: cd toys-emporium-backend && yarn start:dev',
-        );
+        setError('Cannot reach the server. Please try again later.');
         return;
       }
       setError(
@@ -125,13 +123,8 @@ export default function LoginPage() {
             <Shield className="w-6 h-6 text-primary" />
             <h1 className="text-2xl font-bold text-foreground">Staff Login</h1>
           </div>
-          <p className="text-muted-foreground mb-4">
+          <p className="text-muted-foreground mb-6">
             Admin and manager only. Enter your credentials to open your panel.
-          </p>
-
-          <p className="text-xs text-muted-foreground bg-muted/50 rounded-lg px-3 py-2 mb-6">
-            Local dev: ensure backend is running on port 3001 (
-            <code className="text-xs">yarn start:dev</code> in backend folder).
           </p>
 
           {error && (
