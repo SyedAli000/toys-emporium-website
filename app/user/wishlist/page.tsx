@@ -44,6 +44,10 @@ export default function WishlistPage() {
   };
 
   const handleAddToCart = async (product: Product) => {
+    if (product.stock <= 0) {
+      popup.alert('Product not available right now.');
+      return;
+    }
     try {
       await cartService.add(product._id);
       await refreshCart();

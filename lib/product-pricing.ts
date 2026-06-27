@@ -19,6 +19,16 @@ export function getSalePrice(product: Product): number {
   return Math.round(original * (1 - pct / 100) * 100) / 100;
 }
 
+export function discountAmountToPercent(amount: number, originalPrice: number): number {
+  if (originalPrice <= 0 || amount <= 0) return 0;
+  return Math.min(100, Math.round((amount / originalPrice) * 10000) / 100);
+}
+
+export function discountPercentToAmount(percent: number, originalPrice: number): number {
+  if (originalPrice <= 0 || percent <= 0) return 0;
+  return Math.round((originalPrice * percent) / 100);
+}
+
 export function isFlashSaleProduct(product: Product): boolean {
   return Boolean(product.isFlashSale) && hasDiscount(product);
 }

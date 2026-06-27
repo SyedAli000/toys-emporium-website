@@ -8,6 +8,7 @@ import { productService, cartService } from '@/lib/services';
 import { Product } from '@/lib/types';
 import { splitProductsForStore } from '@/lib/product-pricing';
 import { useCart } from '@/contexts/CartContext';
+import { useAppPopup } from '@/contexts/AppPopupContext';
 import { PromoBanner } from '@/components/PromoBanner';
 import { FlashSaleSection } from '@/components/FlashSaleSection';
 import { JustForYouGrid } from '@/components/JustForYouGrid';
@@ -24,6 +25,7 @@ function ProductsContent() {
   const [search, setSearch] = useState(initialSearch);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const { refreshCart, showAddToCartPopup } = useCart();
+  const popup = useAppPopup();
 
   useEffect(() => {
     setSearch(initialSearch);
@@ -52,6 +54,10 @@ function ProductsContent() {
   };
 
   const handleAddToCart = async (product: Product) => {
+    if (product.stock <= 0) {
+      popup.alert('Product not available right now.');
+      return;
+    }
     setActionLoading(`cart-${product._id}`);
     try {
       await cartService.add(product._id, 1, {

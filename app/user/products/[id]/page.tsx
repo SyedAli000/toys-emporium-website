@@ -58,8 +58,12 @@ export default function ProductDetailPage() {
   const displayImages = images.length > 0 ? images : [];
   const activeImage = displayImages[imageIndex] ?? null;
 
-  const handleAddToCart = async () => {
-    if (!product) return;
+  const handleAddToCart = async (): Promise<boolean> => {
+    if (!product) return false;
+    if (product.stock <= 0) {
+      popup.alert('Product not available right now.');
+      return false;
+    }
     setAdding(true);
     try {
       for (let i = 0; i < qty; i++) {
@@ -71,8 +75,10 @@ export default function ProductDetailPage() {
       }
       await refreshCart();
       showAddToCartPopup(product.name);
+      return true;
     } catch {
       popup.error('Could not add to cart.');
+      return false;
     } finally {
       setAdding(false);
     }
@@ -223,8 +229,9 @@ export default function ProductDetailPage() {
             <Button
               className="product-info-panel__buy"
               size="lg"
-              onClick={() => {
-                void handleAddToCart().then(() => router.push('/user/checkout'));
+              onClick={async () => {
+                const added = await handleAddToCart();
+                if (added) router.push('/user/checkout');
               }}
               disabled={adding}
             >
